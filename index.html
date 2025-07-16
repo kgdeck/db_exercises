@@ -2,14 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Files</title>
+    <title>Some Files</title>
 </head>
 <body>
     <h1>Welcome to Exercise Demo</h1>
-    <p>Here are some links to files:</p>
-    <ul>
-        <li><a href="ue_10_sql_simple.pdf" target="_blank">Einfache Übung</a></li>
-        <li><a href="ue_10_sql_simple.html">Einfache Übung (HTML)</a></li>
-    </ul>
-</body>
-</html>
+    <p>Demo-Seite zum Anzeigen der Übungen</p>
+	
+	
+	<table border="1">
+  <thead>
+    <tr>
+      <th>Übungen</th>
+      <th>HTML</th>
+      <th>PDF</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SQL: Einfach</td>
+      <td><a href="ue_10_sql_simple.html">ue_01.html</a></td>
+      <td><a href="ue_10_sql_simple.pdf" target="_blank">ue_01.pdf</a></td>
+    </tr>
+     <tr>
+      <td>SQL: Advanced</td>
+      <td><a href="ue_20_sql_simple.html">ue_02.html (t.b.d.)</a></td>
+      <td><a href="ue_20_sql_simple.pdf" target="_blank">ue_02.pdf (t.b.d.)</a></td>
+    </tr>
+  </tbody>
+</table>
+	
+	<h2>Hier die Daten und Datenmodelle</h2>
+	
+	<table style="border-collapse: collapse; border: none;">
+  <tr>
+    <td style="border: none;">DDL-Statements:</td>
+    <td style="border: none;"><a href="data/create_tables_all.sql">create_tables_all.sql</a></td>
+  </tr>
+  <tr>
+    <td style="border: none;">INSERT-Statements:</td>
+    <td style="border: none;"><a href="data/insert_all.sql">insert_all.sql</a></td>
+  </tr>
+</table>
+<br>
+<br>
+<br>
+
+	
+	Ein einfaches Diagram (Ausschnitt für die Tabellen EMPLO und SHOP):
+    <p><img src="./figures/erd01_small_drawio.png" alt="Einfaches Diagramm" width="400"></p>
+	
+	<br><br>
+	
+	Das vollständige Datenmodell:
+	
+    <p><img src="./figures/erd01_drawio.png" alt="Komplexes Diagramm" width="600"></p>
+
