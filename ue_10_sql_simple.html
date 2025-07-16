@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Klaus-Georg Deck">
+
+<title>Übungen Grundlagen SQL</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="ue_10_sql_simple_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ue_10_sql_simple_files/libs/quarto-html/quarto.js"></script>
+<script src="ue_10_sql_simple_files/libs/quarto-html/popper.min.js"></script>
+<script src="ue_10_sql_simple_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ue_10_sql_simple_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ue_10_sql_simple_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ue_10_sql_simple_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ue_10_sql_simple_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ue_10_sql_simple_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ue_10_sql_simple_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="ue_10_sql_simple.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Übungen Grundlagen SQL</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Klaus-Georg Deck </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">15. Juli 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="einleitung" class="level1">
+<h1>Einleitung</h1>
+<p>In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, grundlegende SQL-Techniken wie Selektion, Bedingungen, Aggregation und Joins zu üben.</p>
+</section>
+<section id="voraussetzungen" class="level1">
+<h1>Voraussetzungen</h1>
+<p>Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Eine Beschreibung, wie dies funktioniert, sowie eine Übersicht über diesen Anwendungsfall findest Du hier (Link/Referenz noch ergänzen).</p>
+</section>
+<section id="aufgabe-1-überblick-über-die-tabellen-emplo-und-shop" class="level1">
+<h1>Aufgabe 1: Überblick über die Tabellen <code>EMPLO</code> und <code>SHOP</code></h1>
+<section id="a-anzahl-der-datensätze" class="level2">
+<h2 class="anchored" data-anchor-id="a-anzahl-der-datensätze">a) Anzahl der Datensätze</h2>
+<p>Ermittle die Anzahl der Datensätze dieser Tabellen in einer jeweils separaten SQL-Anweisung.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> EMPLO;  </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> SHOP;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b-sortieren-und-limitieren" class="level2">
+<h2 class="anchored" data-anchor-id="b-sortieren-und-limitieren">b) Sortieren und Limitieren</h2>
+<p>Zeige für beide Tabellen jeweils alle Datensätze an, sortiert nach dem Attribut <code>ID</code>.<br>
+Tipp: Mit <code>FETCH FIRST 20 ROWS ONLY</code> lässt sich die Anzahl beschränken.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> EMPLO  </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">ID</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>FETCH <span class="fu">FIRST</span> <span class="dv">20</span> <span class="kw">ROWS</span> <span class="kw">ONLY</span>; </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> SHOP  </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">ID</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="c-verweise" class="level2">
+<h2 class="anchored" data-anchor-id="c-verweise">c) Verweise</h2>
+<p>In jeder der beiden Tabellen gibt es ein Attribut, das auf das Attribut <code>ID</code> der anderen Tabelle verweist. Welche Attribute sind das jeweils und was ist vermutlich deren Bedeutung? (Für diese Aufgabe kann in beiden Tabellen das Attribut <code>ADDRESS</code> ignoriert werden.)</p>
+<p>In der Tabelle <code>EMPLO</code> gibt es das Attribut <code>REPORTS_TO</code>. Worauf verweist dies und was ist vermutlich dessen Bedeutung?</p>
+<p><strong>Lösung:</strong></p>
+<p>In der Tabelle <code>EMPLO</code> verweist das Attribut <code>SHOP</code> auf das Attribut <code>ID</code> der Tabelle <code>SHOP</code>. Dieses Attribut beinhaltet die Information, in welchem Shop die jeweilige Person tätig ist.<br>
+In der Tabelle <code>SHOP</code> verweist das Attribut <code>MANAGER</code> auf die <code>ID</code> derjenigen Person aus der Tabelle <code>EMPLO</code>, die diesen Shop leitet.</p>
+<p>Wenn man sich einige Datensätze ansieht, lässt sich erkennen, dass die Werte von <code>REPORTS_TO</code> als Attributwerte von <code>ID</code> der gleichen Tabelle <code>EMPLO</code> vorkommen. Hierbei handelt es sich um die Information, wer der oder die direkte Vorgesetzte ist.</p>
+</section>
+</section>
+<section id="aufgabe-2-selektion-von-attributen-und-order-by" class="level1">
+<h1>Aufgabe 2: Selektion von Attributen und <code>ORDER BY</code></h1>
+<section id="a-selektion-von-attributen" class="level2">
+<h2 class="anchored" data-anchor-id="a-selektion-von-attributen">a) Selektion von Attributen</h2>
+<p>Welche SQL-Anweisung liefert eine Liste aller Shops, wobei nur die Attribute <code>ID</code> und <code>NAME</code> angezeigt werden? Die Ausgabereihenfolge soll nach <code>ID</code> absteigend erfolgen.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME <span class="kw">FROM</span> SHOP</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">ID</span> <span class="kw">DESC</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b-order-by-mit-funktionen" class="level2">
+<h2 class="anchored" data-anchor-id="b-order-by-mit-funktionen">b) ORDER BY mit Funktionen</h2>
+<p>Welche SQL-Anweisung liefert eine Liste aller Namen von Mitarbeitenden? Es soll nach der Länge des Namens, die längsten zuerst, und bei gleicher Länge zeichencodebasiert sortiert werden. Demnach kommt <code>Pauline</code> vor <code>Lea</code> vor <code>Leo</code>.<br>
+Wir sind nur an den Namen und nicht an der Häufigkeit ihres Vorkommens interessiert, Mehrfachvorkommen bitte ignorieren. Tipp: Die SQL-Funktion <code>LENGTH()</code> liefert die Anzahl der Zeichen einer Zeichenkette. Verwende diese in <code>ORDER BY</code>.</p>
+<p><strong>Lösung:</strong></p>
+<p>Zunächst liefert<br>
+<code>SELECT DISTINCT NAME FROM EMPLO</code><br>
+eine Liste der Namen von Mitarbeitenden ohne Duplikate. Diese ist noch zu sortieren:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> NAME  </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">LENGTH</span>(NAME) <span class="kw">DESC</span>, NAME</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="c-limitieren" class="level2">
+<h2 class="anchored" data-anchor-id="c-limitieren">c) Limitieren</h2>
+<p>Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.<br>
+Zusatzfrage: Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?</p>
+<p><strong>Lösung:</strong></p>
+<p>Diese Anweisung liefert das gewünschte Resultat</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> NAME, SALARY <span class="kw">FROM</span> EMPLO  </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> SALARY <span class="kw">DESC</span>, <span class="kw">ID</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>FETCH <span class="fu">FIRST</span> <span class="dv">8</span> <span class="kw">ROWS</span> <span class="kw">ONLY</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dieses könnte man noch wie folgt umsortieren (Zusatzfrage):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> NAME, SALARY <span class="kw">FROM</span> ( </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">SELECT</span> NAME, SALARY <span class="kw">FROM</span> EMPLO </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ORDER</span> <span class="kw">BY</span> SALARY <span class="kw">DESC</span>, <span class="kw">ID</span>  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>   FETCH <span class="fu">FIRST</span> <span class="dv">8</span> <span class="kw">ROWS</span> <span class="kw">ONLY</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>) <span class="kw">ORDER</span> <span class="kw">BY</span> SALARY</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="d-berechnete-attribute" class="level2">
+<h2 class="anchored" data-anchor-id="d-berechnete-attribute">d) Berechnete Attribute</h2>
+<p>Ermittle eine Liste aller Mitarbeitenden, wobei jeweils <code>ID</code>, Name und das Jahresgehalt als <code>ANNUAL_SALARY</code> (entspricht 12 Monatsgehältern) in beliebiger Reihenfolge angezeigt werden.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, SALARY <span class="op">*</span> <span class="dv">12</span> <span class="kw">AS</span> ANNUAL_SALARY <span class="kw">FROM</span> EMPLO</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Das Schlüsselwort <code>AS</code> für Spaltenaliase ist optional, erhöht jedoch die Lesbarkeit.</p>
+</section>
+</section>
+<section id="aufgabe-3-datentyp-date-in-sql" class="level1">
+<h1>Aufgabe 3: Datentyp <code>DATE</code> in SQL</h1>
+<section id="a-anzahl-tage" class="level2">
+<h2 class="anchored" data-anchor-id="a-anzahl-tage">a) Anzahl Tage</h2>
+<p>Die Tabelle <code>EMPLO</code> beinhaltet mit <code>HIRE_DATE</code> das Einstellungsdatum von Mitarbeitenden. Erstelle eine SQL-Anweisung, mit der Mitarbeitende ausgegeben werden, die am 31.12.2025 weniger als 900 Tage im Unternehmen tätig waren. Die Ausgabe soll neben der <code>ID</code> den Namen, das Einstellungsdatum und die Anzahl der Tage im Unternehmen umfassen. Die Ausgabereihenfolge ist beliebig.<br>
+Anmerkungen:<br>
+Mit dem Ausdruck <code>DATE '2025-12-31'</code> erhält man den Wert für das gewünschte Datum. Die Differenz zwischen zwei Werten des Typs <code>DATE</code> liefert die Anzahl Tage, die zwischen diesen Kalenderdaten liegen.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, HIRE_DATE, <span class="dt">DATE</span> <span class="st">'2025-12-31'</span> <span class="op">-</span> HIRE_DATE <span class="kw">AS</span> DAYS  </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO    </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">DATE</span> <span class="st">'2025-12-31'</span> <span class="op">-</span> HIRE_DATE <span class="op">&lt;</span> <span class="dv">900</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Falls der Differenzausdruck nur einmal verwendet werden soll:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, HIRE_DATE, DAYS <span class="kw">FROM</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>( <span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, HIRE_DATE, <span class="dt">DATE</span> <span class="st">'2025-12-31'</span> <span class="op">-</span> HIRE_DATE <span class="kw">AS</span> DAYS </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> EMPLO </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>) <span class="kw">WHERE</span> <span class="dt">DATE</span> DAYS <span class="op">&lt;</span> <span class="dv">900</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b-aktuelles-datum" class="level2">
+<h2 class="anchored" data-anchor-id="b-aktuelles-datum">b) Aktuelles Datum</h2>
+<p>Die Tabelle <code>RENTAL</code> enthält Informationen über Ausleihen von Velos, insbesondere das Ausleihdatum und Rückgabedatum. Ermittle via SQL die Ausleihen, bei denen das Velo noch nicht zurückgegeben wurde, und gebe deren Ausleihe-ID an sowie das Ausleihedatum und die Anzahl der Tage, die das Velo bis heute ausgeliehen war. Die Ausgabereihenfolge ist beliebig.<br>
+Anmerkungen:<br>
+Ausleihen, bei denen das Velo noch nicht zurückgegeben wurde, erkennt man daran, dass das Attribut <code>RETURN_DATE</code> leer (<code>NULL</code>) ist.<br>
+Um in SQL zur Laufzeit das aktuelle Datum zu ermitteln, kann man den Ausdruck <code>CURRENT_DATE</code> verwenden. Im Fall von Oracle wird <code>TRUNC(CURRENT_DATE)</code> empfohlen (Begründung siehe Lösung dieser und folgender Teilaufgabe).</p>
+<p><strong>Lösung:</strong></p>
+<p>Die folgenden Anweisungen liefern das gewünschte Resultat:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Postgres</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, RENTAL_DATE, <span class="fu">CURRENT_DATE</span> <span class="op">-</span> RENTAL_DATE DAYS  </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL <span class="kw">WHERE</span> RETURN_DATE <span class="kw">IS</span> <span class="kw">NULL</span>;  </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- Oracle  </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, RENTAL_DATE, <span class="fu">TRUNC</span>(<span class="fu">CURRENT_DATE</span>) <span class="op">-</span> RENTAL_DATE DAYS   </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL <span class="kw">WHERE</span> RETURN_DATE <span class="kw">IS</span> <span class="kw">NULL</span>;  </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- Postgres und Oracle   </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, RENTAL_DATE, <span class="fu">TRUNC</span>(<span class="fu">CURRENT_DATE</span> <span class="op">-</span> RENTAL_DATE) DAYS  </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL <span class="kw">WHERE</span> RETURN_DATE <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="c-nullwertfunktion-coalesce" class="level2">
+<h2 class="anchored" data-anchor-id="c-nullwertfunktion-coalesce">c) Nullwertfunktion <code>COALESCE()</code></h2>
+<p>Die Anweisung</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>( RETURN_DATE <span class="op">-</span> RENTAL_DATE ) <span class="kw">FROM</span> RENTAL</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>liefert die durchschnittliche Ausleihdauer in Tagen. Dabei werden noch nicht zurückgegebene Velos ignoriert. Erstelle eine modifizierte SQL-Anweisung, welche die noch nicht zurückgegebenen Velos berücksichtigt. Diese sollen in das Resultat einfliessen, indem man als Rückgabedatum das heutige Datum annimmt.<br>
+Tipp:<br>
+Verwende <code>CURRENT_DATE</code> zusammen mit der Funktion <code>COALESCE()</code>. Der Ausdruck <code>COALESCE(A, B)</code> liefert den Wert von <code>A</code>, sofern dieser nicht <code>NULL</code> ist, sonst <code>B</code>.</p>
+<p><strong>Lösung:</strong></p>
+<p>Eine Lösung erhält man dadurch, dass im obigen Statement der Ausdruck <code>RETURN_DATE</code> durch <code>COALESCE( RETURN_DATE, CURRENT_DATE )</code> resp. <code>COALESCE( RETURN_DATE, TRUNC(CURRENT_DATE) )</code> (für Oracle) ersetzt wird. Dieser Ausdruck liefert <code>RETURN_DATE</code>, falls dieses gesetzt ist, resp. das aktuelle Datum, falls <code>RETURN_DATE</code> leer ist.<br>
+Hier die Lösungen:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Postgres</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>( <span class="fu">COALESCE</span>( RETURN_DATE, <span class="fu">CURRENT_DATE</span> ) <span class="op">-</span> RENTAL_DATE )  </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL;  </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- Oracle</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>( <span class="fu">COALESCE</span>( RETURN_DATE, <span class="fu">TRUNC</span>(<span class="fu">CURRENT_DATE</span>) ) <span class="op">-</span> RENTAL_DATE )  </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL; </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Unter Oracle führt das erste Statement zu unterschiedlichen Ergebnissen, wenn es mehrmals nacheinander ausgeführt wird. Dies liegt daran, dass Oracle im Datentyp <code>DATE</code> auch die Uhrzeit ablegt und diese bei der Berechnung berücksichtigt. Der Aufruf von <code>TRUNC()</code> entfernt den Zeitwert, indem er auf <code>0</code> gesetzt wird.</p>
+</section>
+</section>
+<section id="aufgabe-4-einfache-stringverarbeitung" class="level1">
+<h1>Aufgabe 4: Einfache Stringverarbeitung</h1>
+<p>Für die Mitarbeitenden sollen Namenskürzel eingeführt und möglichst automatisiert berechnet werden. Ein erster Versuch besteht darin, die ersten 3 Buchstaben (Kleinschreibung) des Namens zu verwenden. Die folgende Anweisung erzeugt eine Liste aller Mitarbeitenden mit <code>ID</code>, Name und Kürzel:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ID</span>, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>   NAME, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">SUBSTR</span>( <span class="fu">LOWER</span>(NAME), <span class="dv">1</span>, <span class="dv">3</span> ) <span class="kw">AS</span> KURZ</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> NAME</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Beachte die Verwendung der Funktionen <code>LOWER()</code> und <code>SUBSTR()</code>. Wir gehen hier davon aus, dass jeder Name mindestens 3 Zeichen enthält.</p>
+<p>Wie man am Ergebnis erkennt, gibt es jedoch Duplikate.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>NAME</th>
+<th>KURZ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>16011</td>
+<td>Anna</td>
+<td>ann</td>
+</tr>
+<tr class="even">
+<td>16043</td>
+<td>Anna</td>
+<td>ann</td>
+</tr>
+<tr class="odd">
+<td>16010</td>
+<td>Ben</td>
+<td>ben</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>Ergänze die SQL-Anweisung, so dass die folgenden Varianten für Namenskürzel als Attribute <code>KURZ_V1</code> und <code>KURZ_V2</code> ausgegeben werden:</p>
+<ul>
+<li><p><code>KURZ_V1</code>: <code>KURZ</code> ergänzt um die letzten beiden Ziffern von <code>ID</code></p></li>
+<li><p><code>KURZ_V2</code>: <code>KURZ</code> ergänzt um das Einstellungsdatum in der Form <code>YYYYMMDD</code></p></li>
+</ul>
+<p>Die SQL-Anweisung soll also folgendes Resultat erzeugen:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>NAME</th>
+<th>KURZ</th>
+<th>KURZ_V1</th>
+<th>KURZ_V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>16011</td>
+<td>Anna</td>
+<td>ann</td>
+<td>ann11</td>
+<td>ann20250101</td>
+</tr>
+<tr class="even">
+<td>16043</td>
+<td>Anna</td>
+<td>ann</td>
+<td>ann43</td>
+<td>ann20220101</td>
+</tr>
+<tr class="odd">
+<td>16010</td>
+<td>Ben</td>
+<td>ben</td>
+<td>ben10</td>
+<td>ben20220101</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>Was ist von einer solchen Vergabe von Namenskürzel zu halten? Gibt es Alternativen?</p>
+<p>Tipp:</p>
+<p>Strings lassen sich mit der Funktion <code>CONCAT()</code> oder dem Operator <code>||</code> verketten. Zur Umwandlung des Datums in die gewünschte Form verwende die Funktion <code>TO_CHAR(HIRE_DATE, 'YYYYMMDD')</code> und für die Extraktion der letzten beiden Ziffern aus der <code>ID</code> kann die Funktion <code>MOD(ID, 100)</code> (Rest bei Division durch 100) eingesetzt werden, wobei das Resultat noch via <code>TO_CHAR()</code> mit Formatwert <code>FM00</code> zu formatieren ist. (Hier gibt es auch alternative Lösungswege.)</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ID</span>, </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  NAME, </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUBSTR</span>( <span class="fu">LOWER</span>(NAME), <span class="dv">1</span>, <span class="dv">3</span> ) <span class="kw">AS</span> KURZ,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUBSTR</span>( <span class="fu">LOWER</span>(NAME), <span class="dv">1</span>, <span class="dv">3</span> ) <span class="op">||</span> <span class="fu">TO_CHAR</span>(<span class="fu">MOD</span>(<span class="kw">ID</span>, <span class="dv">100</span>), <span class="st">'FM00'</span>) <span class="kw">AS</span> KURZ_V1, </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUBSTR</span>( <span class="fu">LOWER</span>(NAME), <span class="dv">1</span>, <span class="dv">3</span> ) <span class="op">||</span> <span class="fu">TO_CHAR</span>(HIRE_DATE, <span class="st">'YYYYMMDD'</span>) <span class="kw">AS</span> KURZ_V2</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> NAME</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dazu ist zu sagen, dass die Verwendung der vollständigen <code>ID</code> im Namenskürzel eine eindeutige Identifikation ermöglicht, das Kürzel wäre aber alles andere als <em>kurz</em>. Verwendet man stattdessen nur natürliche Personenmerkmale, besteht die Gefahr von Kollisionen. In der Praxis kann man etwa Teile des Vor- und Nachnamens verwenden und diese im Fall von Kollisionen über einen Zähler unterscheiden. Dies setzt natürlich voraus, dass bereits generierte Kürzel in der Datenbank gespeichert werden.</p>
+</section>
+<section id="aufgabe-5-where-klausel" class="level1">
+<h1>Aufgabe 5: <code>WHERE</code>-Klausel</h1>
+<section id="a-gleichheit---ungleichheit" class="level2">
+<h2 class="anchored" data-anchor-id="a-gleichheit---ungleichheit">a) Gleichheit - Ungleichheit</h2>
+<p>Erstelle eine <code>SELECT</code>-Anweisung, die alle Mitarbeitenden mit <code>ID</code>, Name und Einstellungsdatum ausgibt, die <code>Tim</code> heissen, sowei eine Anweisung, die Mitarbeitenden ausgibt, die <em>nicht</em> <code>Tim</code> heissen.</p>
+<p>Erstelle eine weitere <code>SELECT</code>-Anweisung, die alle Informationen über diejenigen Mitarbeitenden ausgibt, deren Salär über 6’000 liegt.</p>
+<p>In allen Fällen ist die Ausgabereihenfolge unwichtig.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, HIRE_DATE  </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO    </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> NAME <span class="op">=</span> <span class="st">'Tim'</span>;</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, HIRE_DATE  </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO    </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> NAME <span class="op">&lt;&gt;</span> <span class="st">'Tim'</span>;</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> EMPLO </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&gt;</span> <span class="dv">6000</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Anstelle <code>NAME &lt;&gt; 'Tim'</code> kann man auch <code>NAME != 'Tim'</code> verwenden.</p>
+</section>
+<section id="b-between" class="level2">
+<h2 class="anchored" data-anchor-id="b-between">b) BETWEEN</h2>
+<p>Erstelle eine Anweisung, die alle Informationen über diejenigen Mitarbeitenden ausgibt, deren Salär zwischen 6’000 und 6’500 liegt. Dabei sollen Mitarbeitende, deren Salär direkt an der Grenze (6’000 resp. 6’500) liegt, ebenfalls berücksichtigt werden. Verwende dabei das Schlüsselwort <code>BETWEEN</code>.</p>
+<p>Erstelle eine Anweisung ohne <code>BETWEEN</code>, die das gleiche Resultat liefert. Verwende Vergleiche und den Booleschen Operator <code>AND</code>.</p>
+<p>In beiden Fällen sollen die Datensätze nach Salär aufsteigend sortiert werden.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> EMPLO    </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="kw">BETWEEN</span> <span class="dv">6000</span> <span class="kw">AND</span> <span class="dv">6500</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> SALARY;</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> EMPLO </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&gt;=</span> <span class="dv">6000</span> <span class="kw">AND</span> SALARY <span class="op">&lt;=</span><span class="dv">6500</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> SALARY;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Beachte, dass das Schlüsselwort <code>AND</code> in <code>SQL</code> zwei unterschiedliche Funktionen erfüllt: Zum einen als logischer Operator, zum anderen wird es bei der Angabe von Wertebereichen in Verbindung mit <code>BETWEEN</code> verwendet. Auch wenn in komplexen <code>WHERE</code>-Bedingungen beide Verwendungen zugleich auftreten können und die jeweilige Bedeutung syntaktisch eindeutig ist, wirkt dies aus Sicht des Autors etwas unglücklich.</p>
+</section>
+</section>
+<section id="aufgabe-6-null---das-unbekannte-nichts" class="level1">
+<h1>Aufgabe 6: <code>NULL</code> - Das unbekannte Nichts</h1>
+<section id="a-null-in-vergleichen" class="level2">
+<h2 class="anchored" data-anchor-id="a-null-in-vergleichen">a) <code>NULL</code> in Vergleichen</h2>
+<p>Das Schlüsselwort <code>NULL</code> steht in SQL-Datenbankumfeld für <em>leer</em>, <em>unbekannt</em>, <em>kein Wert</em> etc. Dies tritt dann auf, wenn etwa bei optionalen Angaben zu Geschlecht, Telefonnummer oder Anzahl der Kinder nichts angegeben wird. So macht es einen Unterschied, ob jemand bei <em>Anzahl Kinder</em> den Zahlenwert <code>0</code> angibt oder keine Angabe macht. Im ersten Fall steht fest, dass die Person keine Kinder hat; im zweiten Fall ist unklar, ob sie Kinder hat – und wenn ja, wie viele.</p>
+<p>In der Tabelle <code>EMPLO</code> ist das Attribut <code>REPORTS_TO</code> optional, d.h. es kann Datensätze geben, bei denen dieses Attribut leer ist.</p>
+<p>Die folgende Anweisung zeigt, dass es genau einen solchen gibt:<br>
+<code>SELECT ID, NAME, JOB, REPORTS_TO FROM EMPLO WHERE REPORTS_TO IS NULL</code></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>NAME</th>
+<th>JOB</th>
+<th>REPORTS_TO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>16051</td>
+<td>Nole</td>
+<td>CEO</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Hierbei handelt es sich um den oder die CEO des Bike-Verleih, was erklärt, warum <code>REPORTS_TO</code> leer ist. Denn bekanntermassen haben CEOs keine direkten Vorgesetzten.</p>
+<p>Gib mit einer SQL-Anweisung die Anzahl der Mitarbeitenden mit direkten Vorgesetzten (als Attribut <code>W_MGR</code>) und in einer weiteren Anweisung die Anzahl der Mitarbeitenden ohne direkten Vorgesetzten (als Attribut <code>WO_MGR</code>) aus.</p>
+<p>Versuche in einer dritten SQL-Anweisung, die Gesamtzahl der Mitarbeitenden, die Zahl der Mitarbeitenden mit sowie die Zahl der Mitarbeitenden ohne direkten Vorgesetzten auszugeben.<br>
+Tipp: Verwende auch <code>COUNT( REPORTS_TO )</code>.</p>
+<p><strong>Lösung:</strong></p>
+<p>Die ersten beiden Anweisungen liefern die Zahl der Mitarbeitenden mit resp. ohne direkten Vorgesetzten:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> W_MGR </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO    </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> REPORTS_TO <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> WO_MGR</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> REPORTS_TO <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hier ist zu beachten, dass Vergleiche wie <code>REPORTS_TO = NULL</code> oder <code>REPORTS_TO &lt;&gt; NULL</code> nicht funktionieren, denn <code>NULL</code> repräsentiert keinen Wert im eigentlichen Sinn.</p>
+<p>Mit der folgenden Anweisung kann die gesamte Information in einer einzigen Zeile ausgegeben werden, man kommt sogar ohne <code>WHERE</code>-Klausel aus.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> ALLE, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>( REPORTS_TO ) <span class="kw">AS</span> W_MGR,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">-</span> <span class="fu">COUNT</span>( REPORTS_TO ) <span class="kw">AS</span> WO_MGR </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Der Ausdruck <code>COUNT( REPORTS_TO )</code> zählt nämlich genau die Datensätze, für die <code>REPORTS_TO</code> nicht <code>NULL</code> ist.</p>
+</section>
+</section>
+<section id="aufgabe-7-join---verbinden-von-tabellen" class="level1">
+<h1>Aufgabe 7: JOIN - Verbinden von Tabellen</h1>
+<section id="a-inner-join---verschiedene-varianten" class="level2">
+<h2 class="anchored" data-anchor-id="a-inner-join---verschiedene-varianten">a) INNER JOIN - Verschiedene Varianten</h2>
+<p>Gib für jeden Mitarbeitenden die <code>ID</code>, den Namen als <code>ENAME</code> sowie den Namen des Shops als <code>SNAME</code> aus, dem er oder sie zugeordnet ist. Die Reihenfolge der Ausgabe soll nach der <code>ID</code> der Mitarbeitenden aufsteigend erfolgen.</p>
+<p>Erstelle zwei SQL-Anweisungen in unterschiedlicher JOIN-Syntax, die dieses Ergebnis liefern.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- JOIN</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> EMPLO.<span class="kw">ID</span>, EMPLO.NAME <span class="kw">AS</span> ENAME, SHOP.NAME <span class="kw">AS</span> SNAME</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO  </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> SHOP <span class="kw">ON</span> EMPLO.SHOP <span class="op">=</span> SHOP.<span class="kw">ID</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> EMPLO.<span class="kw">ID</span>;</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- impliziter JOIN: Tabellen mit Komma getrennt; Bedingung in WHERE</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> EMPLO.<span class="kw">ID</span>, EMPLO.NAME <span class="kw">AS</span> ENAME, SHOP.NAME <span class="kw">AS</span> SNAME</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO, SHOP  </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> EMPLO.SHOP <span class="op">=</span> SHOP.<span class="kw">ID</span> </span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> EMPLO.<span class="kw">ID</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Bei einem <code>JOIN</code> ohne weitere Spezifikation handelt es sich um einen <code>INNER JOIN</code>, d.h. das Schlüsselwort <code>INNER</code> kann immer weggelassen werden.</p>
+</section>
+<section id="b-join---attribute-mit-und-ohne-tabellen-spezifikation" class="level2">
+<h2 class="anchored" data-anchor-id="b-join---attribute-mit-und-ohne-tabellen-spezifikation">b) JOIN - Attribute mit und ohne Tabellen-Spezifikation</h2>
+<p>Wir betrachten hier die Tabellen <code>EMPLO</code> und <code>ADDRESS</code>, die über <code>EMPLO.ADDRESS</code> und <code>ADDRESS.ID</code> inhaltlich verbunden sind.</p>
+<p>Welche Mitarbeitenden wohnen im Kanton (<code>STATE</code>) Wallis (<code>VS</code>), aber nicht in der Stadt (<code>CITY</code>) <code>Sion</code>? Gib die Namen der Mitarbeitenden und ihren Wohnort (<code>CITY</code>) aus, sortiert nach Mitarbeitendenname.</p>
+<p>Erstelle eine erste Anweisung, bei der jedes Attribut den voll qualifizierten Namen enthält, wie z.B. <code>EMPLO.NAME</code>.</p>
+<p>In der zweiten Anweisung soll auf die Angabe von Tabellennamen nach Möglichkeit verzichtet werden. In welchen Fällen ist dies möglich, in welchen nicht?</p>
+<p>Folgendes Resultat wird erwartet:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>NAME</th>
+<th>CITY</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Corinne</td>
+<td>Visp</td>
+</tr>
+<tr class="even">
+<td>Melanie</td>
+<td>Visp</td>
+</tr>
+<tr class="odd">
+<td>Pascal</td>
+<td>Visp</td>
+</tr>
+<tr class="even">
+<td>Silvan</td>
+<td>Zermatt</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- voll qualifizierte Attributnamen</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> EMPLO.NAME, ADDRESS.CITY</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO  </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> ADDRESS <span class="kw">ON</span> EMPLO.ADDRESS <span class="op">=</span> ADDRESS.<span class="kw">ID</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> ADDRESS.STATE <span class="op">=</span> <span class="st">'VS'</span> <span class="kw">AND</span> ADDRESS.CITY <span class="op">&lt;&gt;</span> <span class="st">'Sion'</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> EMPLO.NAME;</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- Tabellennamen, nur wo notwendig</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> NAME, CITY</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO  </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> ADDRESS <span class="kw">ON</span> ADDRESS <span class="op">=</span> ADDRESS.<span class="kw">ID</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> STATE <span class="op">=</span> <span class="st">'VS'</span> <span class="kw">AND</span> CITY <span class="op">&lt;&gt;</span> <span class="st">'Sion'</span> </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> NAME;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wenn der Attributname innerhalb der beteiligten Tabellen eindeutig ist (z.B. <code>NAME</code>, <code>CITY</code>, <code>ADDRESS</code>), dann kann auf die Angabe der Tabelle verzichtet werden. Das einzige Attribut, das im Beispiel in beiden Tabellen vorkommt, ist <code>ID</code>, so dass die Angabe von <code>ADDRESS.ID</code> in der <code>ON</code>-Bedingung notwendig ist. Würde man nur <code>ID</code> verwenden, wäre nicht klar, auf welche Tabelle sich das Attribut bezieht.</p>
+</section>
+</section>
+<section id="aufgabe-8-join---komplexeres-beispiel" class="level1">
+<h1>Aufgabe 8: JOIN - Komplexeres Beispiel</h1>
+<p>Im Bike-Verleih-Szenario können Kunden verschiedene Bikes ausleihen. Die beteiligten Tabellen sind <code>CUSTOMER</code>, <code>RENTAL</code> und <code>BIKE</code>. Wir interessieren uns für Kunden, die vor dem 15. Januar 2025 (mindestens einmal) ein Bike mit Rahmengrösse XL geliehen haben, das kein E-Bike ist.</p>
+<section id="a-join-mehrerer-tabellen" class="level2">
+<h2 class="anchored" data-anchor-id="a-join-mehrerer-tabellen">a) JOIN mehrerer Tabellen</h2>
+<p>Formuliere eine SQL-Anweisung, mit der die <code>ID</code> der Ausleihen, <code>ID</code> der Kunden, Name der Kunden und Modell des ausgeliehenen Bikes ausgegeben werden kann, die der genannten Bedingung entsprechen. Die Ausgabe soll nach <code>ID</code> der Ausleihen sortiert sein. Das Resultat hat die folgende Form (es wird nur die erste Datenzeile angezeigt):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>RID</th>
+<th>KUNDE_ID</th>
+<th>KUNDE_NAME</th>
+<th>MODELL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>60004</td>
+<td>50151</td>
+<td>Tom</td>
+<td>CityLite</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  R.<span class="kw">ID</span> <span class="kw">AS</span> RID, </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  C.<span class="kw">ID</span> <span class="kw">AS</span> KUNDE_ID, </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  C.NAME <span class="kw">AS</span> KUNDE_NAME, </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  B.MODELL </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> CUSTOMER C <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> BIKE B <span class="kw">ON</span> R.BIKE <span class="op">=</span> B.<span class="kw">ID</span> </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> B.FRAME_SIZE <span class="op">=</span> <span class="st">'XL'</span> <span class="kw">AND</span> B.EBIKE<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="kw">AND</span> R.RENTAL_DATE <span class="op">&lt;</span> <span class="dt">DATE</span> <span class="st">'2025-01-15'</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> R.<span class="kw">ID</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hier lassen sich Aliasnamen für Tabellen einsetzen, um die Anweisung übersichtlicher zu gestalten. Um eine solche mehrfach verknüpfte Anweisung zu erstellen, wird man zunächst diejenigen Tabellen ermitteln, die für die gewünschte Information benötigt werden. Das sind hier die bereits genannten <code>RENTAL</code>, <code>CUSTOMER</code> und <code>BIKE</code>.</p>
+<p>Danach kümmert man sich um die Verknüpfungen, die für die jeweiligen <code>JOIN</code>-Bedingungen relevant sind, und formuliert die Verknüpfungen. Hier kann man auch schrittweise vorgehen, solange man in der <code>SELECT</code>-Klausel nicht die vollständige Information verlangt.</p>
+<p>Den ersten Schritt könnte man etwa so gestalten:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>   R.<span class="kw">ID</span> <span class="kw">AS</span> RID, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>   C.<span class="kw">ID</span> <span class="kw">AS</span> KUNDE_ID, </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>   C.NAME <span class="kw">AS</span> KUNDE_NAME</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> CUSTOMER C <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Anschliessend fährt man mit der Tabelle <code>BIKE</code> in einem weiteren <code>JOIN</code> fort und ergänzt das noch fehlende Attribut <code>B.MODELL</code> in der <code>SELECT</code>-Klausel.</p>
+</section>
+<section id="b-eindeutigkeit-mit-countdistinct" class="level2">
+<h2 class="anchored" data-anchor-id="b-eindeutigkeit-mit-countdistinct">b) Eindeutigkeit mit COUNT(DISTINCT)</h2>
+<p>Verwende das Resultat der vorherigen Teilaufgabe und formuliere eine SQL-Anweisung, mit der die Anzahl der Ausleihen (als <code>ANZ_RT</code>), die Anzahl der Kunden (<code>ANZ_C</code>), die Anzahl der unterschiedlichen Namen von Kunden (<code>ANZ_NAME</code>) und die Anzahl der unterschiedlichen Bike-Modelle (<code>ANZ_MODELL</code>) ausgegeben werden. Erwartet wird das folgende Resultat:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ANZ_RT</th>
+<th>ANZ_C</th>
+<th>ANZ_NAME</th>
+<th>ANZ_MODELL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>8</td>
+<td>7</td>
+<td>6</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<p>Tipp: Verwende Ausdrücke wie <code>COUNT(DISTINCT R.ID)</code>, um die Anzahl unterschiedlicher Werte zu ermitteln.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> R.<span class="kw">ID</span>)   ANZ_RT,   <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> C.<span class="kw">ID</span>)     ANZ_C, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> C.NAME) ANZ_NAME, <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> B.MODELL) ANZ_MODELL </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> CUSTOMER C <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> BIKE B <span class="kw">ON</span> R.BIKE <span class="op">=</span> B.<span class="kw">ID</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> B.FRAME_SIZE <span class="op">=</span> <span class="st">'XL'</span> <span class="kw">AND</span> B.EBIKE<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="kw">AND</span> R.RENTAL_DATE <span class="op">&lt;</span> <span class="dt">DATE</span> <span class="st">'2025-01-15'</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
