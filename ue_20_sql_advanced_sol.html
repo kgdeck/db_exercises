@@ -8,7 +8,7 @@
 
 <meta name="author" content="Klaus-Georg Deck">
 
-<title>Übungen Grundlagen SQL</title>
+<title>Übungen Advanced SQL</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3084,12 +3084,12 @@ vertical-align: -.125em;
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="ue_10_sql_simple.html"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="ue_20_sql_advanced_sol.html"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Übungen Grundlagen SQL</h1>
+<h1 class="title">Übungen Advanced SQL</h1>
 </div>
 
 
@@ -3120,349 +3120,623 @@ vertical-align: -.125em;
 
 <section id="einleitung" class="level1">
 <h1>Einleitung</h1>
-<p>In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, grundlegende SQL-Techniken wie Selektion, Bedingungen, Aggregation und Joins zu üben.</p>
+<p>In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, fortgeschrittene SQL-Techniken wie Outer Join, Group-by, Aggregationen und einfache Subselects zu erlernen und vertiefen.</p>
 </section>
 <section id="voraussetzungen" class="level1">
 <h1>Voraussetzungen</h1>
-<p>Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Eine Beschreibung, wie dies funktioniert, sowie eine Übersicht über diesen Anwendungsfall findest Du hier (Link/Referenz noch ergänzen).</p>
+<p>Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres) mit den Tabellen des Bike-Verleih-Szenarios und hast Grundkenntnisse in SQL, etwa indem Du die vorherigen Übungen erfolgreich absolviert hast.</p>
 </section>
-<section id="aufgabe-1-überblick-über-die-tabellen-emplo-und-shop" class="level1">
-<h1>Aufgabe 1: Überblick über die Tabellen <code>EMPLO</code> und <code>SHOP</code></h1>
-<section id="a-anzahl-der-datensätze" class="level2">
-<h2 class="anchored" data-anchor-id="a-anzahl-der-datensätze">a) Anzahl der Datensätze</h2>
-<p>Ermittle die Anzahl der Datensätze dieser Tabellen in einer jeweils separaten SQL-Anweisung.</p>
-</section>
-<section id="b-sortieren-und-limitieren" class="level2">
-<h2 class="anchored" data-anchor-id="b-sortieren-und-limitieren">b) Sortieren und Limitieren</h2>
-<p>Zeige für beide Tabellen jeweils alle Datensätze an, sortiert nach dem Attribut <code>ID</code>.<br>
-Tipp: Mit <code>FETCH FIRST 20 ROWS ONLY</code> lässt sich die Anzahl beschränken.</p>
-</section>
-<section id="c-verweise" class="level2">
-<h2 class="anchored" data-anchor-id="c-verweise">c) Verweise</h2>
-<p>In jeder der beiden Tabellen gibt es ein Attribut, das auf das Attribut <code>ID</code> der anderen Tabelle verweist. Welche Attribute sind das jeweils und was ist vermutlich deren Bedeutung? (Für diese Aufgabe kann in beiden Tabellen das Attribut <code>ADDRESS</code> ignoriert werden.)</p>
-<p>In der Tabelle <code>EMPLO</code> gibt es das Attribut <code>REPORTS_TO</code>. Worauf verweist dies und was ist vermutlich dessen Bedeutung?</p>
-</section>
-</section>
-<section id="aufgabe-2-selektion-von-attributen-und-order-by" class="level1">
-<h1>Aufgabe 2: Selektion von Attributen und <code>ORDER BY</code></h1>
-<section id="a-selektion-von-attributen" class="level2">
-<h2 class="anchored" data-anchor-id="a-selektion-von-attributen">a) Selektion von Attributen</h2>
-<p>Welche SQL-Anweisung liefert eine Liste aller Shops, wobei nur die Attribute <code>ID</code> und <code>NAME</code> angezeigt werden? Die Ausgabereihenfolge soll nach <code>ID</code> absteigend erfolgen.</p>
-</section>
-<section id="b-order-by-mit-funktionen" class="level2">
-<h2 class="anchored" data-anchor-id="b-order-by-mit-funktionen">b) ORDER BY mit Funktionen</h2>
-<p>Welche SQL-Anweisung liefert eine Liste aller Namen von Mitarbeitenden? Es soll nach der Länge des Namens, die längsten zuerst, und bei gleicher Länge zeichencodebasiert sortiert werden. Demnach kommt <code>Pauline</code> vor <code>Lea</code> vor <code>Leo</code>.<br>
-Wir sind nur an den Namen und nicht an der Häufigkeit ihres Vorkommens interessiert, Mehrfachvorkommen bitte ignorieren. Tipp: Die SQL-Funktion <code>LENGTH()</code> liefert die Anzahl der Zeichen einer Zeichenkette. Verwende diese in <code>ORDER BY</code>.</p>
-</section>
-<section id="c-limitieren" class="level2">
-<h2 class="anchored" data-anchor-id="c-limitieren">c) Limitieren</h2>
-<p>Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.<br>
-Zusatzfrage: Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?</p>
-</section>
-<section id="d-berechnete-attribute" class="level2">
-<h2 class="anchored" data-anchor-id="d-berechnete-attribute">d) Berechnete Attribute</h2>
-<p>Ermittle eine Liste aller Mitarbeitenden, wobei jeweils <code>ID</code>, Name und das Jahresgehalt als <code>ANNUAL_SALARY</code> (entspricht 12 Monatsgehältern) in beliebiger Reihenfolge angezeigt werden.</p>
-<p>Das Schlüsselwort <code>AS</code> für Spaltenaliase ist optional, erhöht jedoch die Lesbarkeit.</p>
-</section>
-</section>
-<section id="aufgabe-3-datentyp-date-in-sql" class="level1">
-<h1>Aufgabe 3: Datentyp <code>DATE</code> in SQL</h1>
-<section id="a-anzahl-tage" class="level2">
-<h2 class="anchored" data-anchor-id="a-anzahl-tage">a) Anzahl Tage</h2>
-<p>Die Tabelle <code>EMPLO</code> beinhaltet mit <code>HIRE_DATE</code> das Einstellungsdatum von Mitarbeitenden. Erstelle eine SQL-Anweisung, mit der Mitarbeitende ausgegeben werden, die am 31.12.2025 weniger als 900 Tage im Unternehmen tätig waren. Die Ausgabe soll neben der <code>ID</code> den Namen, das Einstellungsdatum und die Anzahl der Tage im Unternehmen umfassen. Die Ausgabereihenfolge ist beliebig.<br>
-Anmerkungen:<br>
-Mit dem Ausdruck <code>DATE &#39;2025-12-31&#39;</code> erhält man den Wert für das gewünschte Datum. Die Differenz zwischen zwei Werten des Typs <code>DATE</code> liefert die Anzahl Tage, die zwischen diesen Kalenderdaten liegen.</p>
-</section>
-<section id="b-aktuelles-datum" class="level2">
-<h2 class="anchored" data-anchor-id="b-aktuelles-datum">b) Aktuelles Datum</h2>
-<p>Die Tabelle <code>RENTAL</code> enthält Informationen über Ausleihen von Velos, insbesondere das Ausleihdatum und Rückgabedatum. Ermittle via SQL die Ausleihen, bei denen das Velo noch nicht zurückgegeben wurde, und gebe deren Ausleihe-ID an sowie das Ausleihedatum und die Anzahl der Tage, die das Velo bis heute ausgeliehen war. Die Ausgabereihenfolge ist beliebig.<br>
-Anmerkungen:<br>
-Ausleihen, bei denen das Velo noch nicht zurückgegeben wurde, erkennt man daran, dass das Attribut <code>RETURN_DATE</code> leer (<code>NULL</code>) ist.<br>
-Um in SQL zur Laufzeit das aktuelle Datum zu ermitteln, kann man den Ausdruck <code>CURRENT_DATE</code> verwenden. Im Fall von Oracle wird <code>TRUNC(CURRENT_DATE)</code> empfohlen (Begründung siehe Lösung dieser und folgender Teilaufgabe).</p>
-</section>
-<section id="c-nullwertfunktion-coalesce" class="level2">
-<h2 class="anchored" data-anchor-id="c-nullwertfunktion-coalesce">c) Nullwertfunktion <code>COALESCE()</code></h2>
-<p>Die Anweisung</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>( RETURN_DATE <span class="op">-</span> RENTAL_DATE ) <span class="kw">FROM</span> RENTAL</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>liefert die durchschnittliche Ausleihdauer in Tagen. Dabei werden noch nicht zurückgegebene Velos ignoriert. Erstelle eine modifizierte SQL-Anweisung, welche die noch nicht zurückgegebenen Velos berücksichtigt. Diese sollen in das Resultat einfliessen, indem man als Rückgabedatum das heutige Datum annimmt.<br>
-Tipp:<br>
-Verwende <code>CURRENT_DATE</code> zusammen mit der Funktion <code>COALESCE()</code>. Der Ausdruck <code>COALESCE(A, B)</code> liefert den Wert von <code>A</code>, sofern dieser nicht <code>NULL</code> ist, sonst <code>B</code>.</p>
-</section>
-</section>
-<section id="aufgabe-4-einfache-stringverarbeitung" class="level1">
-<h1>Aufgabe 4: Einfache Stringverarbeitung</h1>
-<p>Für die Mitarbeitenden sollen Namenskürzel eingeführt und möglichst automatisiert berechnet werden. Ein erster Versuch besteht darin, die ersten 3 Buchstaben (Kleinschreibung) des Namens zu verwenden. Die folgende Anweisung erzeugt eine Liste aller Mitarbeitenden mit <code>ID</code>, Name und Kürzel:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ID</span>, </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>   NAME, </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">SUBSTR</span>( <span class="fu">LOWER</span>(NAME), <span class="dv">1</span>, <span class="dv">3</span> ) <span class="kw">AS</span> KURZ</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> NAME, <span class="kw">ID</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Beachte die Verwendung der Funktionen <code>LOWER()</code> und <code>SUBSTR()</code>. Wir gehen hier davon aus, dass jeder Name mindestens 3 Zeichen enthält.</p>
-<p>Wie man am Ergebnis erkennt, gibt es jedoch Duplikate.</p>
+<section id="aufgabe-1-verknüpfung-von-tabellen" class="level1">
+<h1>Aufgabe 1: Verknüpfung von Tabellen</h1>
+<section id="a-einfache-outer-join-anweisung" class="level2">
+<h2 class="anchored" data-anchor-id="a-einfache-outer-join-anweisung">a) Einfache OUTER-Join Anweisung</h2>
+<p>Für diesen Übungsteil benötigst Du die Tabellen <code>EMPLO</code> und <code>SHOP</code>. Gib eine SQL-Anweisung an, die den Namen der Mitarbeitenden zusammen mit dem Namen des Shops, dem sie zugeordnet sind, anzeigt. Es sollen alle Mitarbeitenden angezeigt werden, auch jene, die keinem Shop angehören. In diesem Fall soll der Wert des Shop-Namens leer sein. Sortiere die Datensätze nach <code>ID</code> aus <code>EMPLO</code> absteigend.</p>
+<p>Die Resultatmenge hat folgende Gestalt:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>ID</th>
-<th>NAME</th>
-<th>KURZ</th>
+<th>ENAME</th>
+<th>SNAME</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>16011</td>
-<td>Anna</td>
-<td>ann</td>
-</tr>
-<tr class="even">
-<td>16049</td>
-<td>Anna</td>
-<td>ann</td>
-</tr>
-<tr class="odd">
-<td>16051</td>
-<td>Bea</td>
-<td>bea</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>Ergänze die SQL-Anweisung, so dass die folgenden Varianten für Namenskürzel als Attribute <code>KURZ_V1</code> und <code>KURZ_V2</code> ausgegeben werden:</p>
-<ul>
-<li><p><code>KURZ_V1</code>: <code>KURZ</code> ergänzt um die letzten beiden Ziffern von <code>ID</code></p></li>
-<li><p><code>KURZ_V2</code>: <code>KURZ</code> ergänzt um das Einstellungsdatum in der Form <code>YYYYMMDD</code></p></li>
-</ul>
-<p>Die SQL-Anweisung soll also folgendes Resultat erzeugen:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>ID</th>
-<th>NAME</th>
-<th>KURZ</th>
-<th>KURZ_V1</th>
-<th>KURZ_V2</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>16011</td>
-<td>Anna</td>
-<td>ann</td>
-<td>ann11</td>
-<td>ann20250101</td>
-</tr>
-<tr class="even">
-<td>16049</td>
-<td>Anna</td>
-<td>ann</td>
-<td>ann49</td>
-<td>ann20240101</td>
-</tr>
-<tr class="odd">
-<td>16051</td>
-<td>Bea</td>
-<td>bea</td>
-<td>bea51</td>
-<td>bea20200101</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>Was ist von einer solchen Vergabe von Namenskürzel zu halten? Gibt es Alternativen?</p>
-<p>Tipp:</p>
-<p>Strings lassen sich mit der Funktion <code>CONCAT()</code> oder dem Operator <code>||</code> verketten. Zur Umwandlung des Datums in die gewünschte Form verwende die Funktion <code>TO_CHAR(HIRE_DATE, &#39;YYYYMMDD&#39;)</code> und für die Extraktion der letzten beiden Ziffern aus der <code>ID</code> kann die Funktion <code>MOD(ID, 100)</code> (Rest bei Division durch 100) eingesetzt werden, wobei das Resultat noch via <code>TO_CHAR()</code> mit Formatwert <code>FM00</code> zu formatieren ist. (Hier gibt es auch alternative Lösungswege.)</p>
-</section>
-<section id="aufgabe-5-where-klausel" class="level1">
-<h1>Aufgabe 5: <code>WHERE</code>-Klausel</h1>
-<section id="a-gleichheit---ungleichheit" class="level2">
-<h2 class="anchored" data-anchor-id="a-gleichheit---ungleichheit">a) Gleichheit - Ungleichheit</h2>
-<p>Erstelle eine <code>SELECT</code>-Anweisung, die alle Mitarbeitenden mit <code>ID</code>, Name und Einstellungsdatum ausgibt, die <code>Tim</code> heissen, sowei eine Anweisung, die Mitarbeitenden ausgibt, die <em>nicht</em> <code>Tim</code> heissen.</p>
-<p>Erstelle eine weitere <code>SELECT</code>-Anweisung, die alle Informationen über diejenigen Mitarbeitenden ausgibt, deren Salär über 6’000 liegt.</p>
-<p>In allen Fällen ist die Ausgabereihenfolge unwichtig.</p>
-<p>Anstelle <code>NAME &lt;&gt; &#39;Tim&#39;</code> kann man auch <code>NAME != &#39;Tim&#39;</code> verwenden.</p>
-</section>
-<section id="b-between" class="level2">
-<h2 class="anchored" data-anchor-id="b-between">b) BETWEEN</h2>
-<p>Erstelle eine Anweisung, die alle Informationen über diejenigen Mitarbeitenden ausgibt, deren Salär zwischen 6’000 und 6’500 liegt. Dabei sollen Mitarbeitende, deren Salär direkt an der Grenze (6’000 resp. 6’500) liegt, ebenfalls berücksichtigt werden. Verwende dabei das Schlüsselwort <code>BETWEEN</code>.</p>
-<p>Erstelle eine Anweisung ohne <code>BETWEEN</code>, die das gleiche Resultat liefert. Verwende Vergleiche und den Booleschen Operator <code>AND</code>.</p>
-<p>In beiden Fällen sollen die Datensätze nach Salär aufsteigend sortiert werden.</p>
-</section>
-</section>
-<section id="aufgabe-6-null---das-unbekannte-nichts" class="level1">
-<h1>Aufgabe 6: <code>NULL</code> - Das unbekannte Nichts</h1>
-<section id="a-null-in-vergleichen" class="level2">
-<h2 class="anchored" data-anchor-id="a-null-in-vergleichen">a) <code>NULL</code> in Vergleichen</h2>
-<p>Das Schlüsselwort <code>NULL</code> steht in SQL-Datenbankumfeld für <em>leer</em>, <em>unbekannt</em>, <em>kein Wert</em> etc. Dies tritt dann auf, wenn etwa bei optionalen Angaben zu Geschlecht, Telefonnummer oder Anzahl der Kinder nichts angegeben wird. So macht es einen Unterschied, ob jemand bei <em>Anzahl Kinder</em> den Zahlenwert <code>0</code> angibt oder keine Angabe macht. Im ersten Fall steht fest, dass die Person keine Kinder hat; im zweiten Fall ist unklar, ob sie Kinder hat – und wenn ja, wie viele.</p>
-<p>In der Tabelle <code>EMPLO</code> ist das Attribut <code>REPORTS_TO</code> optional, d.h. es kann Datensätze geben, bei denen dieses Attribut leer ist.</p>
-<p>Die folgende Anweisung zeigt, dass es genau eine solche Person gibt:<br>
-<code>SELECT ID, NAME, JOB, REPORTS_TO FROM EMPLO WHERE REPORTS_TO IS NULL</code></p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>ID</th>
-<th>NAME</th>
-<th>JOB</th>
-<th>REPORTS_TO</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>16051</td>
-<td>Bea</td>
-<td>CEO</td>
+<td>16055</td>
+<td>Leon</td>
 <td></td>
 </tr>
-</tbody>
-</table>
-<p>Hierbei handelt es sich um den oder die CEO des Bike-Verleih, was erklärt, warum <code>REPORTS_TO</code> leer ist. Denn bekanntermassen haben CEOs keine direkten Vorgesetzten.</p>
-<p>Gib mit einer SQL-Anweisung die Anzahl der Mitarbeitenden mit direkten Vorgesetzten (als Attribut <code>W_MGR</code>) und in einer weiteren Anweisung die Anzahl der Mitarbeitenden ohne direkten Vorgesetzten (als Attribut <code>WO_MGR</code>) aus.</p>
-<p>Versuche in einer dritten SQL-Anweisung, die Gesamtzahl der Mitarbeitenden, die Zahl der Mitarbeitenden mit sowie die Zahl der Mitarbeitenden ohne direkten Vorgesetzten auszugeben.<br>
-Tipp: Verwende auch <code>COUNT( REPORTS_TO )</code>.</p>
-</section>
-</section>
-<section id="aufgabe-7-join---verbinden-von-tabellen" class="level1">
-<h1>Aufgabe 7: JOIN - Verbinden von Tabellen</h1>
-<section id="a-inner-join---verschiedene-varianten" class="level2">
-<h2 class="anchored" data-anchor-id="a-inner-join---verschiedene-varianten">a) INNER JOIN - Verschiedene Varianten</h2>
-<p>Gib für jeden Mitarbeitenden die <code>ID</code>, den Namen als <code>ENAME</code> sowie den Namen des Shops als <code>SNAME</code> aus, dem er oder sie zugeordnet ist. Die Reihenfolge der Ausgabe soll nach der <code>ID</code> der Mitarbeitenden aufsteigend erfolgen.</p>
-<p>Erstelle zwei SQL-Anweisungen in unterschiedlicher JOIN-Syntax, die dieses Ergebnis liefern.</p>
-</section>
-<section id="b-join---attribute-mit-und-ohne-tabellen-spezifikation" class="level2">
-<h2 class="anchored" data-anchor-id="b-join---attribute-mit-und-ohne-tabellen-spezifikation">b) JOIN - Attribute mit und ohne Tabellen-Spezifikation</h2>
-<p>Wir betrachten hier die Tabellen <code>EMPLO</code> und <code>ADDRESS</code>, die über <code>EMPLO.ADDRESS</code> und <code>ADDRESS.ID</code> inhaltlich verbunden sind.</p>
-<p>Welche Mitarbeitenden wohnen im Kanton (<code>STATE</code>) Wallis (<code>VS</code>), aber nicht in der Stadt (<code>CITY</code>) <code>Visp</code>? Gib die Namen der Mitarbeitenden und ihren Wohnort (<code>CITY</code>) aus, sortiert nach Mitarbeitendenname.</p>
-<p>Erstelle eine erste Anweisung, bei der jedes Attribut den voll qualifizierten Namen enthält, wie z.B. <code>EMPLO.NAME</code>.</p>
-<p>In der zweiten Anweisung soll auf die Angabe von Tabellennamen nach Möglichkeit verzichtet werden. In welchen Fällen ist dies möglich, in welchen nicht?</p>
-<p>Folgendes Resultat wird erwartet:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>NAME</th>
-<th>CITY</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Corinne</td>
-<td>Zermatt</td>
-</tr>
 <tr class="even">
-<td>Silvan</td>
-<td>Zermatt</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="aufgabe-8-join---komplexeres-beispiel" class="level1">
-<h1>Aufgabe 8: JOIN - Komplexeres Beispiel</h1>
-<p>Im Bike-Verleih-Szenario können Kunden verschiedene Bikes ausleihen. Die beteiligten Tabellen sind <code>CUSTOMER</code>, <code>RENTAL</code> und <code>BIKE</code>. Wir interessieren uns für Kunden, die vor dem 15. März 2025 (mindestens einmal) ein Bike mit Rahmengrösse XL geliehen haben, das kein E-Bike ist.</p>
-<section id="a-join-mehrerer-tabellen" class="level2">
-<h2 class="anchored" data-anchor-id="a-join-mehrerer-tabellen">a) JOIN mehrerer Tabellen</h2>
-<p>Formuliere eine SQL-Anweisung, mit der die <code>ID</code> der Ausleihen, <code>ID</code> der Kunden, Name der Kunden und Modell des ausgeliehenen Bikes ausgegeben werden kann, die der genannten Bedingung entsprechen. Die Ausgabe soll nach <code>ID</code> der Ausleihen sortiert sein. Das erwartete Resultat hat folgende Form:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>RID</th>
-<th>KUNDE_ID</th>
-<th>KUNDE_NAME</th>
-<th>MODELL</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>60004</td>
-<td>50151</td>
-<td>Tom</td>
-<td>CityLite</td>
-</tr>
-<tr class="even">
-<td>60052</td>
-<td>50150</td>
-<td>Marie</td>
-<td>CityLite</td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>Hier lassen sich Aliasnamen für Tabellen einsetzen, um die Anweisung übersichtlicher zu gestalten. Um eine solche mehrfach verknüpfte Anweisung zu erstellen, wird man zunächst diejenigen Tabellen ermitteln, die für die gewünschte Information benötigt werden. Das sind hier die bereits genannten <code>RENTAL</code>, <code>CUSTOMER</code> und <code>BIKE</code>.</p>
-<p>Danach kümmert man sich um die Verknüpfungen, die für die jeweiligen <code>JOIN</code>-Bedingungen relevant sind, und formuliert die Verknüpfungen. Hier kann man auch schrittweise vorgehen, solange man in der <code>SELECT</code>-Klausel nicht die vollständige Information verlangt.</p>
-<p>Den ersten Schritt könnte man etwa so gestalten:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   R.<span class="kw">ID</span> <span class="kw">AS</span> RID, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   C.<span class="kw">ID</span> <span class="kw">AS</span> KUNDE_ID, </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>   C.NAME <span class="kw">AS</span> KUNDE_NAME</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> CUSTOMER C <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Anschliessend fährt man mit der Tabelle <code>BIKE</code> in einem weiteren <code>JOIN</code> fort und ergänzt das noch fehlende Attribut <code>B.MODELL</code> in der <code>SELECT</code>-Klausel.</p>
-</section>
-<section id="b-eindeutigkeit-mit-countdistinct" class="level2">
-<h2 class="anchored" data-anchor-id="b-eindeutigkeit-mit-countdistinct">b) Eindeutigkeit mit COUNT(DISTINCT)</h2>
-<p>Verwende das Resultat der vorherigen Teilaufgabe und formuliere eine SQL-Anweisung, mit der die Anzahl der Ausleihen (als <code>ANZ_RT</code>), die Anzahl der Kunden (<code>ANZ_C</code>), die Anzahl der unterschiedlichen Namen von Kunden (<code>ANZ_NAME</code>) und die Anzahl der unterschiedlichen Bike-Modelle (<code>ANZ_MODELL</code>) ausgegeben werden. Erwartet wird das folgende Resultat:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>ANZ_RT</th>
-<th>ANZ_C</th>
-<th>ANZ_NAME</th>
-<th>ANZ_MODELL</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>13</td>
-<td>11</td>
-<td>7</td>
-<td>5</td>
-</tr>
-</tbody>
-</table>
-<p>Tipp: Verwende Ausdrücke wie <code>COUNT(DISTINCT C.ID)</code>, um die Anzahl unterschiedlicher Werte zu ermitteln.</p>
-</section>
-</section>
-<section id="aufgabe-9-self-join" class="level1">
-<h1>Aufgabe 9: Self-JOIN</h1>
-<p>In der Tabelle <code>EMPLO</code> wird neben der <code>ID</code> und dem Namen der Mitarbeitenden im Attribut <code>REPORTS_TO</code> auch die <code>ID</code> des oder der Vorgesetzten abgelegt, sofern es eine/n gibt.</p>
-<p>Formuliere eine SQL-Anweisung, die den Namen der Mitarbeitenden, gefolgt vom Namen des/r Vorgesetzten ausgibt. Es sollen nur die Mitarbeitenden angezeigt werden, welche Vorgesetzte haben, und zwar sortiert nach <code>ID</code> des/r Mitarbeitenden. Diese Aufgabe zeigt, dass nach Attributen sortiert werden kann, auch wenn diese nicht in der Ergebnismenge ausgegeben werden.</p>
-<p>Hier das erwartete Resultat (ersten beiden Datensätze):</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>ENAME</th>
-<th>MNAME</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Mia</td>
-<td>Luca</td>
-</tr>
-<tr class="even">
-<td>Luca</td>
+<td>16051</td>
 <td>Bea</td>
+<td></td>
 </tr>
 <tr class="odd">
+<td>16050</td>
+<td>Felix</td>
+<td>Vaduz CyclePoint</td>
+</tr>
+<tr class="even">
+<td>16049</td>
+<td>Anna</td>
+<td>Bern Rollt</td>
+</tr>
+<tr class="odd">
+<td>…</td>
 <td>…</td>
 <td>…</td>
 </tr>
 </tbody>
 </table>
-<p>Tipp: Selektiere zweimal von der gleichen Tabelle, die Du durch <code>JOIN</code> verknüpfst, und verwende Aliasnamen für die Tabellen. Wenn wie hier mehrere gleiche Attributnamen vorkommen, werden auch Spalten-Aliase empfohlen.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> E.<span class="kw">ID</span>, E.NAME ENAME, S.NAME SNAME</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO E</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> SHOP S <span class="kw">ON</span> E.SHOP <span class="op">=</span> S.<span class="kw">ID</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> E.<span class="kw">ID</span> <span class="kw">DESC</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b-vergleich-zwischen-outer--und-inner-join" class="level2">
+<h2 class="anchored" data-anchor-id="b-vergleich-zwischen-outer--und-inner-join">b) Vergleich zwischen OUTER- und INNER-Join</h2>
+<p>Ersetzst Du in der Lösung der vorherigen Teilaufgabe <code>LEFT OUTER JOIN</code> durch <code>JOIN</code>, dann sind die Resultate unterschiedlich. Zeige dies, indem Du in beiden Fällen die Anzahl der Datensätze ermittelst. Was kann man grundsätzlich über die Anzahl der Datensätze in solchen Fällen aussagen? Welche Datensätze kommen in welchem Resultat nicht vor?</p>
+<p>Verwende anschliessend als Verknüpfung <code>FULL OUTER JOIN</code>. Wie viele Datensätze erhält man dann?</p>
+<p>Verwende einen Teil der Lösung der vorherigen Teilaufgabe:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> E.<span class="kw">ID</span>, E.NAME ENAME, S.NAME SNAME</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO E</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> SHOP S <span class="kw">ON</span> E.SHOP <span class="op">=</span> S.<span class="kw">ID</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Lösung:</strong></p>
+<p>Die Anzahl der Datensätze beim <code>LEFT OUTER JOIN</code> ist <code>24</code>, beim <code>INNER JOIN</code> ist sie <code>22</code> und beim <code>FULL OUTER JOIN</code> ist sie ‘25’.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO E</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> SHOP S <span class="kw">ON</span> E.SHOP <span class="op">=</span> S.<span class="kw">ID</span>;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO E</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> SHOP S <span class="kw">ON</span> E.SHOP <span class="op">=</span> S.<span class="kw">ID</span>;</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO E</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FULL</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> SHOP S <span class="kw">ON</span> E.SHOP <span class="op">=</span> S.<span class="kw">ID</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wie Du Dich leicht überzeugen kannst, gibt es genau 22 Mitarbeitende, die einem Shop zugeordnet sind, 2 Mitarbeitende, die keinem Shop zugeordnet sind und genau ein Shop, dem kein Mitarbeitender zugeordnet ist.</p>
+<p>Die Datensätze des <code>INNER</code>-Join sind in der Resultatmenge des <code>LEFT OUTER</code>-Join enthalten, der mehr Datensätze haben kann, nämlich die Datensätze der ersten (linken) Tabelle, für die die <code>ON</code>-Bedingung nicht zutrifft. Bei einem <code>RIGHT OUTER</code>-Join kommen möglicherweise Datensätze der zweiten (rechten) Tabelle hinzu. Betrachtet man die Anzahl der Datensätze, so ist die Anzahl eines <code>INNER</code>-Join kleiner oder gleich der Anzahl des entsprechenden <code>LEFT OUTER</code>-Join sowie des <code>RIGHT OUTER</code>-Join und die Anzahl der Datensätze des <code>FULL</code>-Join ist grösser oder gleich der Anzahl des <code>LEFT OUTER</code>- resp. <code>RIGHT OUTER</code>-Join. Der <code>FULL OUTER</code>-Join enthält die Datensätze des <code>INNER JOIN</code> sowie die der linken und der rechten Tabelle, für die die <code>ON</code>-Bedingung nicht zutrifft.</p>
+</section>
+<section id="c-join-inner-left-right-full-und-outer" class="level2">
+<h2 class="anchored" data-anchor-id="c-join-inner-left-right-full-und-outer">c) Join: INNER, LEFT, RIGHT, FULL und OUTER</h2>
+<p>Begründe, warum ein <code>LEFT INNER</code>- oder <code>RIGHT INNER</code>-Join keinen Sinn macht und warum bei <code>LEFT OUTER</code>-, <code>RIGHT OUTER</code>- und <code>FULL OUTER</code>-Join das Schlüsselwort <code>OUTER</code> weggelassen werden kann. Erstelle eine Übersichtstabelle, in der die jeweilige Lang- und Kurzform der verschiedenen Joins aufgelistet sind.</p>
+<p><strong>Lösung:</strong></p>
+<p>Die Resultatmenge eines <code>INNER</code>-Join ist von der Reihenfolge der Verknüpfung unabhängig, d.h. die Anweisung <code>SELECT ... FROM A JOIN B</code> ergibt bei gleicher <code>ON</code>-Bedingung das gleiche Resultat wie <code>SELECT ... FROM B JOIN A</code> (die Reihenfolge der Attribute oder der Datensätze kann variieren). Daher macht die Verwendung von <code>LEFT</code> oder <code>RIGHT</code> hier keinen Sinn.</p>
+<p>Die folgende Tabelle stellt die verschiedenen Verknüpfungen mit ihrer Kurzform dar:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 31%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Verknüpfung</th>
+<th>Kurzform</th>
+<th>Bemerkung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>INNER JOIN</code></td>
+<td><code>JOIN</code></td>
+<td>symmetrisch</td>
+</tr>
+<tr class="even">
+<td><code>LEFT OUTER JOIN</code></td>
+<td><code>LEFT JOIN</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>RIGHT OUTER JOIN</code></td>
+<td><code>RIGHT JOIN</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>FULL OUTER JOIN</code></td>
+<td><code>FULL JOIN</code></td>
+<td>symmetrisch</td>
+</tr>
+<tr class="odd">
+<td><code>CROSS JOIN</code></td>
+<td><code>,</code> (Komma)</td>
+<td>keine <code>ON</code>-Bedingung</td>
+</tr>
+</tbody>
+</table>
+<p>Aus jeder Kurzform ergibt sich eindeutig die Verknüpfung, da <code>LEFT</code> resp. <code>RIGHT</code> nur bei den nicht symmetrischen <code>OUTER</code>-Verknüpfungen Sinn macht, und ein <code>JOIN</code> allein, also ohne <code>LEFT</code>, <code>RIGHT</code> oder <code>FULL</code> dann zwangsläufig ein <code>INNER JOIN</code> ist.</p>
+</section>
+</section>
+<section id="aufgabe-2-verknüpfungen-und-exists" class="level1">
+<h1>Aufgabe 2: Verknüpfungen und <code>EXISTS</code></h1>
+<p>Für diese Aufgabe benötigst Du die Tabellen <code>CUSTOMER</code>, <code>RENTAL</code> und <code>BIKE</code>, die Informationen über Bike-Ausleihen von Kunden enthalten.</p>
+<section id="a-einfache-verknüpfung" class="level2">
+<h2 class="anchored" data-anchor-id="a-einfache-verknüpfung">a) Einfache Verknüpfung</h2>
+<p>Welche Kunden haben am 2. Januar 2025 oder früher Bikes ausgeliehen? Gib die Ausleih-ID, den Namen des Kunden und das Ausleihdatum, sortiert nach Ausleih-ID an. Das erwartete Resultat:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>R_ID</th>
+<th>NAME</th>
+<th>DATUM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>60023</td>
+<td>Emma</td>
+<td>2025-01-01</td>
+</tr>
+<tr class="even">
+<td>60046</td>
+<td>Lena</td>
+<td>2025-01-02</td>
+</tr>
+<tr class="odd">
+<td>60078</td>
+<td>Francesco</td>
+<td>2025-01-01</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> R.<span class="kw">ID</span> R_ID, C.NAME, R.RENTAL_DATE DATUM </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> CUSTOMER C <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> RENTAL_DATE <span class="op">&lt;=</span> <span class="dt">DATE</span> <span class="st">&#39;2025-01-02&#39;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> R.<span class="kw">ID</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b-kunden-mit-und-ohne-ausleihen" class="level2">
+<h2 class="anchored" data-anchor-id="b-kunden-mit-und-ohne-ausleihen">b) Kunden mit und ohne Ausleihen</h2>
+<p>Welche Kunden haben bisher (irgendwann einmal) Bikes ausgeliehen?</p>
+<p>Welche Kunden haben bisher noch keine Bikes ausgeliehen?</p>
+<p>Gib jeweils die Kunden-ID und den Namen der Person an, aufsteigend sortiert nach Kunden-ID.</p>
+<p>Tipp:<br>
+Verwende für den ersten Teil die vorherige Teilaufgabe. Beachte, dass Kunden nicht mehrfach genannt werden sollen. Für den zweiten Teil kann man einen <code>LEFT JOIN</code> verwenden und diejenigen Datensätze aus dem Resultat herausfiltern, für die die <code>ON</code>-Bedingung nicht zutrifft. (Alternativ kann man auch einen Subselect mit der SQL-Klausel <code>EXISTS</code> resp. <code>NOT EXISTS</code> verwenden.)</p>
+<p><strong>Lösung:</strong></p>
+<p>Kunden, die Bikes ausgeliehen haben:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> C.<span class="kw">ID</span>, C.NAME </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> CUSTOMER C <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> C.<span class="kw">ID</span>;</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">--mit EXISTS:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> C.<span class="kw">ID</span>, C.NAME <span class="kw">FROM</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>CUSTOMER C </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">EXISTS</span>( <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> RENTAL R <span class="kw">WHERE</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> );</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kunden, die bisher noch keine Bikes ausgeliehen haben:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> C.<span class="kw">ID</span>, C.NAME </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> CUSTOMER C </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> RENTAL R <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> R.CUSTOMER <span class="kw">IS</span>  <span class="kw">NULL</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> C.<span class="kw">ID</span>;</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">--mit EXISTS:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> C.<span class="kw">ID</span>, C.NAME <span class="kw">FROM</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>CUSTOMER C </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span>( <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> RENTAL R <span class="kw">WHERE</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> );</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Der Trick bei der ersten Anweisung besteht darin, diejenigen Datensätze nach dem <code>LEFT JOIN</code> herauszufiltern, die mit <code>NULL</code> ergänzt wurden, d. h. die, für die es keine wahre <code>ON</code>-Bedingung gibt, also keine Ausleihen.</p>
+</section>
+<section id="c-anzahl-der-kunden" class="level2">
+<h2 class="anchored" data-anchor-id="c-anzahl-der-kunden">c) Anzahl der Kunden</h2>
+<p>Wie viele Kunden gibt es insgesamt, wie viele haben ein Bike des Modells ‘Pathway’ ausgeliehen und wie viele haben kein solches Modell ausgeliehen.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Alle Kunden</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> CT <span class="kw">FROM</span> CUSTOMER;</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Kunden die ein &#39;Pathway&#39; ausgeliehen haben</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> CT_PW <span class="kw">FROM</span> CUSTOMER C</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">EXISTS</span>( </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>   <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> RENTAL R </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>   <span class="kw">JOIN</span> BIKE B <span class="kw">ON</span> R.BIKE <span class="op">=</span> B.<span class="kw">ID</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>   <span class="kw">WHERE</span> B.MODELL <span class="op">=</span> <span class="st">&#39;Pathway&#39;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">AND</span> C.<span class="kw">ID</span> <span class="op">=</span> R.CUSTOMER </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">-- Kunden, die kein &#39;Pathway&#39; ausgeliehen haben</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">--    wie zuvor, anstelle &#39;EXISTS&#39; verwende &#39;NOT EXISTS&#39;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> CT_NO_PW <span class="kw">FROM</span> CUSTOMER C</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span>( </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>   <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> RENTAL R </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>   <span class="kw">JOIN</span> BIKE B <span class="kw">ON</span> R.BIKE <span class="op">=</span> B.<span class="kw">ID</span> </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>   <span class="kw">WHERE</span> B.MODELL <span class="op">=</span> <span class="st">&#39;Pathway&#39;</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">AND</span> C.<span class="kw">ID</span> <span class="op">=</span> R.CUSTOMER </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In einer einzigen Anweisung (hier gibt es unterschiedliche Varianten):</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>(CUST.<span class="kw">ID</span>) <span class="kw">AS</span> CT, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>(TAB.<span class="kw">ID</span>) <span class="kw">AS</span> CT_PW, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>(CUST.<span class="kw">ID</span>)<span class="op">-</span><span class="fu">COUNT</span>(TAB.<span class="kw">ID</span>) <span class="kw">AS</span> CT_NOPW </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> CUSTOMER CUST</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> C.<span class="kw">ID</span> <span class="kw">FROM</span> CUSTOMER C </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> <span class="kw">EXISTS</span> ( </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>   <span class="kw">SELECT</span> <span class="dv">1</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>   <span class="kw">FROM</span> RENTAL R </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>   <span class="kw">JOIN</span> BIKE B <span class="kw">ON</span> R.BIKE <span class="op">=</span> B.<span class="kw">ID</span> </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>   <span class="kw">WHERE</span> B.MODELL <span class="op">=</span> <span class="st">&#39;Pathway&#39;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">AND</span> C.<span class="kw">ID</span> <span class="op">=</span> R.CUSTOMER )</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>) TAB <span class="kw">ON</span> TAB.<span class="kw">ID</span> <span class="op">=</span> CUST.<span class="kw">ID</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="aufgabe-3-gruppierung-und-aggregatsfunktionen" class="level1">
+<h1>Aufgabe 3: Gruppierung und Aggregatsfunktionen</h1>
+<section id="a-average-gehalt-und-tage-im-unternehmen" class="level2">
+<h2 class="anchored" data-anchor-id="a-average-gehalt-und-tage-im-unternehmen">a) Average: Gehalt und Tage im Unternehmen</h2>
+<p>Gib eine SQL-Anweisung an, die das Durchschnitts-Gehalt und die Durchschnitts-Zeit im Unternehmen aller Mitarbeitenden ausgibt. Das Gehalt soll gerundet auf ganze Werte, die Zeit im Unternehmen gerundet als ganze Tage ausgegeben werden.<br>
+Zusätzlich soll angegeben werden, wie viele Mitarbeitenden es insgesamt gibt und wie viele jeweils in die Gehalts- resp. Zeit-Berechnung einfliessen. Beachte, dass fehlende Werte (<code>NULL</code>) bei den meisten Aggregatsfunktionen ignoriert werden.</p>
+<p>Das Ergebnis sieht wie folgt aus:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>CT_ALL</th>
+<th>AVG_SAL</th>
+<th>CT_SAL</th>
+<th>AVG_DAYS</th>
+<th>CT_DAYS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>24</td>
+<td>5’457</td>
+<td>23</td>
+<td>1’114</td>
+<td>21</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>(<span class="op">*</span>) CT_ALL,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ROUND</span>( <span class="fu">AVG</span>( SALARY ) ) AVG_SAL, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>( SALARY ) CT_SAL,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ROUND</span>( <span class="fu">AVG</span>( <span class="fu">TRUNC</span>(<span class="fu">CURRENT_DATE</span> <span class="op">-</span> HIRE_DATE )) ) AVG_DAYS , </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>( HIRE_DATE) CT_DAYS</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Der Ausdruck <code>AVG( TRUNC(CURRENT_DATE - HIRE_DATE ))</code> kann wie folgt vereinfacht werden:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Postgres:</th>
+<th><code>AVG( CURRENT_DATE - HIRE_DATE )</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Oracle:</td>
+<td><code>AVG( TRUNC(CURRENT_DATE) - HIRE_DATE )</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="b-average-gehalt-und-tage-im-unternehmen-pro-shop" class="level2">
+<h2 class="anchored" data-anchor-id="b-average-gehalt-und-tage-im-unternehmen-pro-shop">b) Average: Gehalt und Tage im Unternehmen pro Shop</h2>
+<p>Ermittle die gleichen Kennzahlen wie in der vorherigen Teilaufgabe, jedoch nicht für das gesamte Unternehmen, sondern pro Shop, dem die Mitarbeitenden zugeordnet sind. Gib dazu zusätzlich die Shop-ID aus und sortiere die Ausgabe nach der Shop-ID.<br>
+Das Resultat hat die folgende Form:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>SHOP_ID</th>
+<th>CT_ALL</th>
+<th>AVG_SAL</th>
+<th>CT_SAL</th>
+<th>AVG_DAYS</th>
+<th>CT_DAYS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td>4</td>
+<td>5’157</td>
+<td>4</td>
+<td>1’295</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>4</td>
+<td>5’425</td>
+<td>4</td>
+<td>930</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>   SHOP SHOP_ID,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>(<span class="op">*</span>)  CT_ALL,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ROUND</span>( <span class="fu">AVG</span>( SALARY ) ) AVG_SAL, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>( SALARY ) CT_SAL,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ROUND</span>( <span class="fu">AVG</span>( <span class="fu">TRUNC</span>(<span class="fu">CURRENT_DATE</span> <span class="op">-</span> HIRE_DATE )) ) AVG_DAYS , </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>   <span class="fu">COUNT</span>( HIRE_DATE) CT_DAYS</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> SHOP</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> SHOP</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="c-average-mehr-gehalt-als-der-durchschnitt" class="level2">
+<h2 class="anchored" data-anchor-id="c-average-mehr-gehalt-als-der-durchschnitt">c) Average: Mehr Gehalt als der Durchschnitt</h2>
+<p>Gebe eine SQL-Anweisung an, die ermittelt, wer mehr als der Durchschnitt verdient. Von den Mitarbeitenden soll die <code>ID</code>, der Name, das Salär, die Shop-ID ausgegeben werden, sortiert nach <code>ID</code>.<br>
+Gebe in einer weiteren SQL-Anweisung zusätzlich in jedem Datensatz das Durchschnittsgehalt (gerundet) aus.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, SALARY, SHOP <span class="kw">FROM</span> EMPLO</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&gt;</span> (<span class="kw">SELECT</span> <span class="fu">AVG</span>(SALARY) <span class="kw">FROM</span> EMPLO)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">ID</span>;</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, SALARY, SHOP, <span class="fu">ROUND</span>(AVG_S) AVG_SAL <span class="kw">FROM</span> emplo</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> (<span class="kw">SELECT</span> <span class="fu">AVG</span>(SALARY) AVG_S <span class="kw">FROM</span> EMPLO)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> SALARY <span class="op">&gt;</span> AVG_S</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">ID</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="d-average-mehr-gehalt-als-der-durchschnitt-pro-shop" class="level2">
+<h2 class="anchored" data-anchor-id="d-average-mehr-gehalt-als-der-durchschnitt-pro-shop">d) Average: Mehr Gehalt als der Durchschnitt pro Shop</h2>
+<p>Formuliere SQL-Anweisungen, mit denen analog zur vorherigen Teilaufgabe alle Mitarbeitenden ausgegeben werden, die <em>mindestens so viel</em> wie der Durchschnitt der Mitarbeitenden des gleichen Shops erhalten. Die auszugebenden Attribute sind die gleichen, nur dass sich das Durchschnittsgehalt jetzt auf den Shop bezieht.</p>
+<p><strong>Lösung:</strong></p>
+<p>Wir beginnen mit dem Ermitteln des Durchschnittsgehalts pro Shop:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> SHOP, <span class="fu">AVG</span>(SALARY) </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> SHOP</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nun verknüpft man jede Datenzeile aus <code>EMPLO</code> mit dem Resultat dieses <code>SELECT</code>, das für den passenden Shop das Durchschnittsgehalt liefert.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, SALARY, E.SHOP <span class="kw">FROM</span> EMPLO E</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> (<span class="kw">SELECT</span> SHOP, <span class="fu">AVG</span>(SALARY) AVG_SAL_SH </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> EMPLO</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">GROUP</span> <span class="kw">BY</span> SHOP) SUBSEL </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> SUBSEL.SHOP <span class="op">=</span> E.SHOP </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&gt;=</span> AVG_SAL_SH </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Da die Subselect-Anweisung bereits das Durchschnittsgehalt pro Shop ermittelt, lässt sich das Attribut <code>AVG_SAL_SH</code> einfach in die <code>SELECT</code>-Klausel der Gesamtanweisung aufnehmen.<br>
+Ergänzt werden muss die <code>ON</code>-Bedingung noch um den Zusatz, dass - wenn man die Aufgabenstellung so verstehen möchte - auch Mitarbeitende ohne Shop-Zuordnung ausgegeben werden, sofern sie mindestens so viel verdienen, wie der Durchschnitt aller solcher Mitarbeitenden.<br>
+Du kannst Dich gerne vom Effekt dieses Zusatzes überzeugen, indem Du ihn wahlweise aktiviert oder deaktivierst.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, SALARY, E.SHOP, <span class="fu">ROUND</span>(AVG_SAL_SH) AVG_SAL_SH <span class="kw">FROM</span> EMPLO E</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> (<span class="kw">SELECT</span> SHOP, <span class="fu">AVG</span>(SALARY) AVG_SAL_SH </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> EMPLO</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">GROUP</span> <span class="kw">BY</span> SHOP) SUBSEL </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> SUBSEL.SHOP <span class="op">=</span> E.SHOP </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>   <span class="co">--die folgende Zeile aktivieren/deaktivieren</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>   <span class="co">--OR (SUBSEL.SHOP IS NULL AND E.SHOP IS NULL)</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&gt;=</span> AVG_SAL_SH </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="aufgabe-4-mehrere-group-by-attribute" class="level1">
+<h1>Aufgabe 4: Mehrere GROUP-BY Attribute</h1>
+<p>Diese Aufgabe befasst sich mit den Bike-Ausleihen aus der Tabelle <code>RENTAL</code>. Beachte, dass Bikes mehrmals ausgeliehen werden können. Beantworte mittels SQL-Anweisungen die folgenden Fragen:</p>
+<ul>
+<li><p>Wie viele Ausleihen gab es pro Jahr und Monat und wie viele Bikes wurden pro Jahr und Monat ausgeliehen?</p></li>
+<li><p>Wie viele Ausleihen gab es pro Jahr, Monat und Shop, und wie viele Bikes wurden pro Jahr, Monat und Shop ausgeliehen?</p></li>
+</ul>
+<p>Das Ergebnis soll jeweils die beteiligten Gruppierungsattribute sowie die Anzahl Bikes enthalten. Die Ausgabereihenfolge erfolgt nach den Gruppierungsattributen.</p>
+<p>Das erwartete Resultat sieht wie folgt aus:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>RENTAL_YEAR</th>
+<th>RENTAL_MONTH</th>
+<th>CT_RENTALS</th>
+<th>CT_BIKES</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2025</td>
+<td>1</td>
+<td>40</td>
+<td>27</td>
+</tr>
+<tr class="even">
+<td>2025</td>
+<td>2</td>
+<td>31</td>
+<td>25</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>RENTAL_YEAR</th>
+<th>RENTAL_MONTH</th>
+<th>SHOP</th>
+<th>CT_RENTALS</th>
+<th>CT_BIKES</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2025</td>
+<td>1</td>
+<td>10</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>2025</td>
+<td>1</td>
+<td>12</td>
+<td>13</td>
+<td>8</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>Tipps: Mit <code>EXTRACT( YEAR FROM RENTAL_DATE )</code> kann man das Jahr aus einem Datumswert ermitteln, analog auch den Monat.<br>
+Der Shop einer Ausleihe lässt sich ermitteln, indem man beachtet, welchem Shop das ausgeliehene Bike zugeordnet ist.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> RENTAL_DATE) RENTAL_YEAR, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">EXTRACT</span>(<span class="dt">MONTH</span> <span class="kw">FROM</span> RENTAL_DATE) RENTAL_MONTH,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) CT_AUSLEIHEN, </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> BIKE) CT_BIKES</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> RENTAL_YEAR, RENTAL_MONTH</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> RENTAL_YEAR, RENTAL_MONTH;</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> RENTAL_DATE) RENTAL_YEAR, </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">EXTRACT</span>(<span class="dt">MONTH</span> <span class="kw">FROM</span> RENTAL_DATE) RENTAL_MONTH,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  SHOP,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) CT_RENTALS, </span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> BIKE) CT_BIKES</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> BIKE B <span class="kw">ON</span> B.<span class="kw">ID</span> <span class="op">=</span> R.BIKE</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> RENTAL_YEAR, RENTAL_MONTH, SHOP</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> RENTAL_YEAR, RENTAL_MONTH, SHOP;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="aufgabe-5-group-by-und-having" class="level1">
+<h1>Aufgabe 5: GROUP-BY und HAVING</h1>
+<p>Welche Bikes wurden vor dem 4. März 2025 mindestens 3 mal ausgeliehen? Formuliere ein SQL-Anweisung, mit der die Bike-ID, Modell und die Häufigkeit der Ausleihe für dieses Bike ausgegeben werden. Die Reihenfolge soll nach Bike-ID erfolgen.</p>
+<p><strong>Lösung:</strong></p>
+<p>Zunächst lassen sich mit der <code>HAVING</code>-Klausel Gruppierungen mittels Aggregatfunktionen filtern.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> BIKE, <span class="fu">COUNT</span>(<span class="op">*</span>) CT </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> R.RENTAL_DATE <span class="op">&lt;</span> <span class="dt">DATE</span> <span class="st">&#39;2025-03-04&#39;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> BIKE</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>)<span class="op">&gt;</span><span class="dv">3</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Jetzt benötigt man noch den Modellnamen, den man über eine Verknüpfung mit der Tabelle <code>BIKE</code> erhält:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> BIKE B_ID, MODELL, CT</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> BIKE </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>( <span class="kw">SELECT</span> BIKE, <span class="fu">COUNT</span>(<span class="op">*</span>) CT </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> RENTAL R </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> R.RENTAL_DATE <span class="op">&lt;</span> <span class="dt">DATE</span> <span class="st">&#39;2025-03-04&#39;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">GROUP</span> <span class="kw">BY</span> BIKE</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>)<span class="op">&gt;</span><span class="dv">3</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>) T <span class="kw">ON</span> T.BIKE <span class="op">=</span> BIKE.<span class="kw">ID</span> </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> T.BIKE</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Resultat:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>B_ID</th>
+<th>MODELL</th>
+<th>CT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>30029</td>
+<td>Loadster</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>30040</td>
+<td>TrailKing</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aufgabe-6-subselects" class="level1">
+<h1>Aufgabe 6: Subselects</h1>
+<p>Beantworte via SQL-Anweisungen die folgenden Fragen:</p>
+<ul>
+<li><p>An welchem Tag wurden erstmals Bikes ausgeliehen? Gib von allen Ausleihen, die an diesem Tag getätigt wurden, die ID, die Bike-ID und das Datum aus.</p></li>
+<li><p>Welche Kunden haben die meisten Ausleihen getätigt? Gib alle diese Kunden (Customer-ID) aus, zusammen mit der Anzahl der Ausleihen.</p></li>
+<li><p>Welche Kunden haben die meisten Bikes ausgeliehen? Gib alle diese Kunden (Customer-ID) aus, zusammen mit der Anzahl entliehener Bikes.</p></li>
+</ul>
+<p><strong>Lösung:</strong></p>
+<p>Beachte, dass es mehrere solche Ausleihen geben kann. Daher wäre eine Lösung, die den ersten Datensatz aus einer nach Ausleihdatum aufsteigend sortierten Liste auswählt, nicht korrekt.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, BIKE, RENTAL_DATE <span class="kw">FROM</span> RENTAL </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> RENTAL_DATE <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MIN</span>(RENTAL_DATE) <span class="kw">FROM</span> RENTAL);</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- alternative Lösung: Ausleihen, zu denen es keine früheren gibt</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> T.<span class="kw">ID</span>, T.BIKE, T.RENTAL_DATE <span class="kw">FROM</span> RENTAL T</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> RENTAL T_NOTEXIST </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> T.RENTAL_DATE <span class="op">&gt;</span> T_NOTEXIST.RENTAL_DATE </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> T_NOTEXIST.<span class="kw">ID</span> <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Für die Lösung der zweiten Teilaufgabe betrachten wir die folgende Anweisung, die pro Kunde/Kundin die Anzahl seiner/ihrer Ausleihen ermittelt:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> CUSTOMER, <span class="fu">COUNT</span>(<span class="op">*</span>) CT_RENTALS</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> CUSTOMER</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Da diese Anweisung in der gesuchten Anweisung mehrmals auftritt, geben wir ihr als <em>Common Table Expression</em> (CTE) den Namen <code>CT_CUST</code> und können diesen Ausdruck wie einen gewöhnlichen Tabellennamen mehrmals verwenden.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> CT_CUST(CUSTOMER, CT_RENTALS) <span class="kw">AS</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>       CUSTOMER, </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">COUNT</span>(<span class="op">*</span>) CT_RENTALS</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>       <span class="kw">FROM</span> RENTAL R</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>       <span class="kw">GROUP</span> <span class="kw">BY</span> CUSTOMER</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> CUSTOMER, CT_RENTALS <span class="kw">FROM</span> CT_CUST</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> CT_RENTALS <span class="op">=</span> (<span class="kw">SELECT</span> <span class="fu">MAX</span>(CT_RENTALS) <span class="kw">FROM</span> CT_CUST)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> CUSTOMER</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Der Vollständigkeit wegen hier die SQL-Anweisung ohne Verwendung von <code>WITH</code>. An der Markierung erkennt man die genannte <code>SELECT</code>-Anweisung:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> CUSTOMER, CT_RENTALS </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;(SELECT CUSTOMER, COUNT(*) CT_RENTALS</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt; FROM RENTAL R GROUP BY CUSTOMER)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> CT_RENTALS <span class="op">=</span> </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a> ( <span class="kw">SELECT</span> <span class="fu">MAX</span>(CT_RENTALS) <span class="kw">FROM</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>   <span class="co">--&gt;(SELECT CUSTOMER, COUNT(*) CT_RENTALS</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>   <span class="co">--&gt; FROM RENTAL R GROUP BY CUSTOMER)</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a> ) </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> CUSTOMER;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die Lösung für die dritte Teilaufgabe besteht darin, in der vorherigen Anweisung <code>COUNT(*)</code> durch <code>COUNT(DISTINCT BIKE)</code> zu ersetzen.</p>
+<p>Die Resultate sind:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>CUSTOMER</th>
+<th>CT_RENTALS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>50136</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>50151</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>CUSTOMER</th>
+<th>CT_BIKES</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>50117</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>50118</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>50136</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
 </section>
 
 </main>

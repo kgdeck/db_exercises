@@ -8,7 +8,7 @@
 
 <meta name="author" content="Klaus-Georg Deck">
 
-<title>Übungen Grundlagen SQL</title>
+<title>Übungen SQL – DML</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3084,12 +3084,12 @@ vertical-align: -.125em;
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="ue_10_sql_simple.html"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="ue_40_sql_dml_sol.html"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Übungen Grundlagen SQL</h1>
+<h1 class="title">Übungen SQL – DML</h1>
 </div>
 
 
@@ -3120,349 +3120,285 @@ vertical-align: -.125em;
 
 <section id="einleitung" class="level1">
 <h1>Einleitung</h1>
-<p>In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, grundlegende SQL-Techniken wie Selektion, Bedingungen, Aggregation und Joins zu üben.</p>
+<p>In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, die SQL-Operationen zur Datenmanipulation (DML) wie <code>INSERT</code>, <code>UPDATE</code>, und <code>DELETE</code> zu erlernen und zu vertiefen.</p>
 </section>
 <section id="voraussetzungen" class="level1">
 <h1>Voraussetzungen</h1>
-<p>Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Eine Beschreibung, wie dies funktioniert, sowie eine Übersicht über diesen Anwendungsfall findest Du hier (Link/Referenz noch ergänzen).</p>
+<p>Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres) mit den Tabellen des Bike-Verleih-Szenarios und hast Grundkenntnisse in SQL, etwa indem Du die vorherigen Übungen erfolgreich absolviert hast.</p>
+<p>Als weitere Voraussetzungen werden die Tabellen <code>UE_EMPLO</code> und <code>UE_CUSTOMER</code> benötigt. Sollten diese nicht vorhanden sein, lassen sie sich wie folgt erstellen:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">--falls Tabellen vorhanden sind und neu erstellt werden sollen:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">--DROP TABLE UE_CUSTOMER; </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">--DROP TABLE UE_EMPLO;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> UE_EMPLO (</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ID</span> <span class="dt">INT</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   NAME <span class="dt">VARCHAR</span>(<span class="dv">100</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>   JOB <span class="dt">VARCHAR</span>(<span class="dv">100</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   SALARY <span class="dt">INT</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> UE_CUSTOMER ( </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ID</span> <span class="dt">INT</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>   NAME <span class="dt">VARCHAR</span>(<span class="dv">100</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>   IS_VIP <span class="dt">INT</span> <span class="kw">DEFAULT</span> <span class="dv">0</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Falls die Tabellen bereits existieren, stelle sicher, dass sie leer sind. (Vgl. Aufgabe ‘Einfaches Löschen von Datensätzen’)</p>
 </section>
-<section id="aufgabe-1-überblick-über-die-tabellen-emplo-und-shop" class="level1">
-<h1>Aufgabe 1: Überblick über die Tabellen <code>EMPLO</code> und <code>SHOP</code></h1>
-<section id="a-anzahl-der-datensätze" class="level2">
-<h2 class="anchored" data-anchor-id="a-anzahl-der-datensätze">a) Anzahl der Datensätze</h2>
-<p>Ermittle die Anzahl der Datensätze dieser Tabellen in einer jeweils separaten SQL-Anweisung.</p>
-</section>
-<section id="b-sortieren-und-limitieren" class="level2">
-<h2 class="anchored" data-anchor-id="b-sortieren-und-limitieren">b) Sortieren und Limitieren</h2>
-<p>Zeige für beide Tabellen jeweils alle Datensätze an, sortiert nach dem Attribut <code>ID</code>.<br>
-Tipp: Mit <code>FETCH FIRST 20 ROWS ONLY</code> lässt sich die Anzahl beschränken.</p>
-</section>
-<section id="c-verweise" class="level2">
-<h2 class="anchored" data-anchor-id="c-verweise">c) Verweise</h2>
-<p>In jeder der beiden Tabellen gibt es ein Attribut, das auf das Attribut <code>ID</code> der anderen Tabelle verweist. Welche Attribute sind das jeweils und was ist vermutlich deren Bedeutung? (Für diese Aufgabe kann in beiden Tabellen das Attribut <code>ADDRESS</code> ignoriert werden.)</p>
-<p>In der Tabelle <code>EMPLO</code> gibt es das Attribut <code>REPORTS_TO</code>. Worauf verweist dies und was ist vermutlich dessen Bedeutung?</p>
-</section>
-</section>
-<section id="aufgabe-2-selektion-von-attributen-und-order-by" class="level1">
-<h1>Aufgabe 2: Selektion von Attributen und <code>ORDER BY</code></h1>
-<section id="a-selektion-von-attributen" class="level2">
-<h2 class="anchored" data-anchor-id="a-selektion-von-attributen">a) Selektion von Attributen</h2>
-<p>Welche SQL-Anweisung liefert eine Liste aller Shops, wobei nur die Attribute <code>ID</code> und <code>NAME</code> angezeigt werden? Die Ausgabereihenfolge soll nach <code>ID</code> absteigend erfolgen.</p>
-</section>
-<section id="b-order-by-mit-funktionen" class="level2">
-<h2 class="anchored" data-anchor-id="b-order-by-mit-funktionen">b) ORDER BY mit Funktionen</h2>
-<p>Welche SQL-Anweisung liefert eine Liste aller Namen von Mitarbeitenden? Es soll nach der Länge des Namens, die längsten zuerst, und bei gleicher Länge zeichencodebasiert sortiert werden. Demnach kommt <code>Pauline</code> vor <code>Lea</code> vor <code>Leo</code>.<br>
-Wir sind nur an den Namen und nicht an der Häufigkeit ihres Vorkommens interessiert, Mehrfachvorkommen bitte ignorieren. Tipp: Die SQL-Funktion <code>LENGTH()</code> liefert die Anzahl der Zeichen einer Zeichenkette. Verwende diese in <code>ORDER BY</code>.</p>
-</section>
-<section id="c-limitieren" class="level2">
-<h2 class="anchored" data-anchor-id="c-limitieren">c) Limitieren</h2>
-<p>Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.<br>
-Zusatzfrage: Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?</p>
-</section>
-<section id="d-berechnete-attribute" class="level2">
-<h2 class="anchored" data-anchor-id="d-berechnete-attribute">d) Berechnete Attribute</h2>
-<p>Ermittle eine Liste aller Mitarbeitenden, wobei jeweils <code>ID</code>, Name und das Jahresgehalt als <code>ANNUAL_SALARY</code> (entspricht 12 Monatsgehältern) in beliebiger Reihenfolge angezeigt werden.</p>
-<p>Das Schlüsselwort <code>AS</code> für Spaltenaliase ist optional, erhöht jedoch die Lesbarkeit.</p>
-</section>
-</section>
-<section id="aufgabe-3-datentyp-date-in-sql" class="level1">
-<h1>Aufgabe 3: Datentyp <code>DATE</code> in SQL</h1>
-<section id="a-anzahl-tage" class="level2">
-<h2 class="anchored" data-anchor-id="a-anzahl-tage">a) Anzahl Tage</h2>
-<p>Die Tabelle <code>EMPLO</code> beinhaltet mit <code>HIRE_DATE</code> das Einstellungsdatum von Mitarbeitenden. Erstelle eine SQL-Anweisung, mit der Mitarbeitende ausgegeben werden, die am 31.12.2025 weniger als 900 Tage im Unternehmen tätig waren. Die Ausgabe soll neben der <code>ID</code> den Namen, das Einstellungsdatum und die Anzahl der Tage im Unternehmen umfassen. Die Ausgabereihenfolge ist beliebig.<br>
-Anmerkungen:<br>
-Mit dem Ausdruck <code>DATE &#39;2025-12-31&#39;</code> erhält man den Wert für das gewünschte Datum. Die Differenz zwischen zwei Werten des Typs <code>DATE</code> liefert die Anzahl Tage, die zwischen diesen Kalenderdaten liegen.</p>
-</section>
-<section id="b-aktuelles-datum" class="level2">
-<h2 class="anchored" data-anchor-id="b-aktuelles-datum">b) Aktuelles Datum</h2>
-<p>Die Tabelle <code>RENTAL</code> enthält Informationen über Ausleihen von Velos, insbesondere das Ausleihdatum und Rückgabedatum. Ermittle via SQL die Ausleihen, bei denen das Velo noch nicht zurückgegeben wurde, und gebe deren Ausleihe-ID an sowie das Ausleihedatum und die Anzahl der Tage, die das Velo bis heute ausgeliehen war. Die Ausgabereihenfolge ist beliebig.<br>
-Anmerkungen:<br>
-Ausleihen, bei denen das Velo noch nicht zurückgegeben wurde, erkennt man daran, dass das Attribut <code>RETURN_DATE</code> leer (<code>NULL</code>) ist.<br>
-Um in SQL zur Laufzeit das aktuelle Datum zu ermitteln, kann man den Ausdruck <code>CURRENT_DATE</code> verwenden. Im Fall von Oracle wird <code>TRUNC(CURRENT_DATE)</code> empfohlen (Begründung siehe Lösung dieser und folgender Teilaufgabe).</p>
-</section>
-<section id="c-nullwertfunktion-coalesce" class="level2">
-<h2 class="anchored" data-anchor-id="c-nullwertfunktion-coalesce">c) Nullwertfunktion <code>COALESCE()</code></h2>
-<p>Die Anweisung</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>( RETURN_DATE <span class="op">-</span> RENTAL_DATE ) <span class="kw">FROM</span> RENTAL</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>liefert die durchschnittliche Ausleihdauer in Tagen. Dabei werden noch nicht zurückgegebene Velos ignoriert. Erstelle eine modifizierte SQL-Anweisung, welche die noch nicht zurückgegebenen Velos berücksichtigt. Diese sollen in das Resultat einfliessen, indem man als Rückgabedatum das heutige Datum annimmt.<br>
-Tipp:<br>
-Verwende <code>CURRENT_DATE</code> zusammen mit der Funktion <code>COALESCE()</code>. Der Ausdruck <code>COALESCE(A, B)</code> liefert den Wert von <code>A</code>, sofern dieser nicht <code>NULL</code> ist, sonst <code>B</code>.</p>
-</section>
-</section>
-<section id="aufgabe-4-einfache-stringverarbeitung" class="level1">
-<h1>Aufgabe 4: Einfache Stringverarbeitung</h1>
-<p>Für die Mitarbeitenden sollen Namenskürzel eingeführt und möglichst automatisiert berechnet werden. Ein erster Versuch besteht darin, die ersten 3 Buchstaben (Kleinschreibung) des Namens zu verwenden. Die folgende Anweisung erzeugt eine Liste aller Mitarbeitenden mit <code>ID</code>, Name und Kürzel:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ID</span>, </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>   NAME, </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">SUBSTR</span>( <span class="fu">LOWER</span>(NAME), <span class="dv">1</span>, <span class="dv">3</span> ) <span class="kw">AS</span> KURZ</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> NAME, <span class="kw">ID</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Beachte die Verwendung der Funktionen <code>LOWER()</code> und <code>SUBSTR()</code>. Wir gehen hier davon aus, dass jeder Name mindestens 3 Zeichen enthält.</p>
-<p>Wie man am Ergebnis erkennt, gibt es jedoch Duplikate.</p>
+<section id="aufgabe-1-insert-anweisungen" class="level1">
+<h1>Aufgabe 1: <code>INSERT</code>-Anweisungen</h1>
+<section id="a-einfaches-insert" class="level2">
+<h2 class="anchored" data-anchor-id="a-einfaches-insert">a) Einfaches <code>INSERT</code></h2>
+<p>Formuliere zwei SQL-Anweisungen, so dass dadurch je ein Datensatz in die Tabelle <code>UE_CUSTOMER</code> eingefügt wird. Diese Tabelle soll danach den folgenden Inhalt besitzen:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>ID</th>
 <th>NAME</th>
-<th>KURZ</th>
+<th>IS_VIP</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>16011</td>
-<td>Anna</td>
-<td>ann</td>
+<td>60000</td>
+<td>Hannah</td>
+<td>0</td>
 </tr>
 <tr class="even">
-<td>16049</td>
-<td>Anna</td>
-<td>ann</td>
-</tr>
-<tr class="odd">
-<td>16051</td>
-<td>Bea</td>
-<td>bea</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-<td>…</td>
+<td>60001</td>
+<td>Jan</td>
+<td>1</td>
 </tr>
 </tbody>
 </table>
-<p>Ergänze die SQL-Anweisung, so dass die folgenden Varianten für Namenskürzel als Attribute <code>KURZ_V1</code> und <code>KURZ_V2</code> ausgegeben werden:</p>
-<ul>
-<li><p><code>KURZ_V1</code>: <code>KURZ</code> ergänzt um die letzten beiden Ziffern von <code>ID</code></p></li>
-<li><p><code>KURZ_V2</code>: <code>KURZ</code> ergänzt um das Einstellungsdatum in der Form <code>YYYYMMDD</code></p></li>
-</ul>
-<p>Die SQL-Anweisung soll also folgendes Resultat erzeugen:</p>
+<p>In der Tabellendefinition ist für das Attribut <code>IS_VIP</code> als Default <code>0</code> vorgesehen. Formuliere die erste <code>INSERT</code>-Anweisung so, dass dieser Default verwendet wird und keine explizite Angabe dieses Attributwertes erfolgt.</p>
+<p>Tipp:<br>
+Falls Du einen Fehler machst und die Tabelle leeren möchtest, verwende <code>DELETE FROM UE_CUSTOMER</code>.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_CUSTOMER (<span class="kw">ID</span>, NAME) </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">60000</span>, <span class="st">&#39;Hannah&#39;</span>);</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_CUSTOMER (<span class="kw">ID</span>, NAME, IS_VIP) </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">60001</span>, <span class="st">&#39;Jan&#39;</span>, <span class="dv">1</span>);</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die Angabe der Attributliste <code>(ID, NAME, IS_VIP)</code> ist im zweiten Fall nicht notwendig, wird jedoch grundsätzlich empfohlen.</p>
+</section>
+<section id="b-multi-row-insert" class="level2">
+<h2 class="anchored" data-anchor-id="b-multi-row-insert">b) Multi-row <code>INSERT</code></h2>
+<p>Füge der Tabelle drei weitere Datensätze hinzu, nämlich ‘Lisa’, ‘Lukas’ und ‘Max’ mit beliebiger <code>ID</code>, die alle keine VIPs sind. Verwende eine einzige <code>INSERT</code>-Anweisung.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_CUSTOMER (<span class="kw">ID</span>, NAME) </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">60004</span>, <span class="st">&#39;Lisa&#39;</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       (<span class="dv">60005</span>, <span class="st">&#39;Lukas&#39;</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       (<span class="dv">60006</span>, <span class="st">&#39;Max&#39;</span>);</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b-fehler-bei-insert" class="level2">
+<h2 class="anchored" data-anchor-id="b-fehler-bei-insert">b) Fehler bei <code>INSERT</code></h2>
+<p>Bei dieser Teilaufgabe gehen wir davon aus, dass die Tabelle <code>UE_CUSTOMER</code> mindestens den ersten Datensatz aus der Teilaufgabe a) besitzt. Formuliere eine Multi-row-<code>SELECT</code>-Anweisung, bei der der als letztes einzufügende Datensatz der Eindeutigkeit des Attributs <code>ID</code> widerspricht. Was passiert mit den vorherigen Datensätzen? Konstruiere ein geeignetes Beispiel.</p>
+<p><strong>Lösung:</strong></p>
+<p>Zunächst stellen wir sicher, dass die Tabelle genau den genannten Datensatz beinhaltet:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> UE_CUSTOMER;</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_CUSTOMER (<span class="kw">ID</span>, NAME) <span class="kw">VALUES</span>(<span class="dv">60000</span>, <span class="st">&#39;Hannah&#39;</span>);</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Der Inhalt von <code>UE_CUSTOMER</code> sieht dann so aus:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>ID</th>
 <th>NAME</th>
-<th>KURZ</th>
-<th>KURZ_V1</th>
-<th>KURZ_V2</th>
+<th>IS_VIP</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>16011</td>
-<td>Anna</td>
-<td>ann</td>
-<td>ann11</td>
-<td>ann20250101</td>
-</tr>
-<tr class="even">
-<td>16049</td>
-<td>Anna</td>
-<td>ann</td>
-<td>ann49</td>
-<td>ann20240101</td>
-</tr>
-<tr class="odd">
-<td>16051</td>
-<td>Bea</td>
-<td>bea</td>
-<td>bea51</td>
-<td>bea20200101</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
+<td>60000</td>
+<td>Hannah</td>
+<td>0</td>
 </tr>
 </tbody>
 </table>
-<p>Was ist von einer solchen Vergabe von Namenskürzel zu halten? Gibt es Alternativen?</p>
-<p>Tipp:</p>
-<p>Strings lassen sich mit der Funktion <code>CONCAT()</code> oder dem Operator <code>||</code> verketten. Zur Umwandlung des Datums in die gewünschte Form verwende die Funktion <code>TO_CHAR(HIRE_DATE, &#39;YYYYMMDD&#39;)</code> und für die Extraktion der letzten beiden Ziffern aus der <code>ID</code> kann die Funktion <code>MOD(ID, 100)</code> (Rest bei Division durch 100) eingesetzt werden, wobei das Resultat noch via <code>TO_CHAR()</code> mit Formatwert <code>FM00</code> zu formatieren ist. (Hier gibt es auch alternative Lösungswege.)</p>
+<p>Dann wird die folgende Anweisung ausgeführt, die zu einem Fehler führt:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_CUSTOMER (<span class="kw">ID</span>, NAME, IS_VIP)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">VALUES</span> (<span class="dv">60001</span>, <span class="st">&#39;Mario&#39;</span>, <span class="dv">1</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>          (<span class="dv">60000</span>, <span class="st">&#39;Isa&#39;</span>, <span class="dv">0</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Anschliessend lässt sich leicht feststellen, dass sich am ursprünglichen Inhalt der Tabelle nichts verändert hat. Insbesondere der Datensatz mit <code>ID</code> <code>60001</code> wurde nicht hinzugefügt, auch wenn er allein nicht zu einem Fehler geführt hätte.<br>
+Hier gilt daher das “Alles-oder-Nichts” Prinzip: Entweder ist die Anweisung fehlerfrei und alle Datensätze werden hinzugefügt, oder sie führt zu einem Fehler und kein Datensatz kommt hinzu.</p>
 </section>
-<section id="aufgabe-5-where-klausel" class="level1">
-<h1>Aufgabe 5: <code>WHERE</code>-Klausel</h1>
-<section id="a-gleichheit---ungleichheit" class="level2">
-<h2 class="anchored" data-anchor-id="a-gleichheit---ungleichheit">a) Gleichheit - Ungleichheit</h2>
-<p>Erstelle eine <code>SELECT</code>-Anweisung, die alle Mitarbeitenden mit <code>ID</code>, Name und Einstellungsdatum ausgibt, die <code>Tim</code> heissen, sowei eine Anweisung, die Mitarbeitenden ausgibt, die <em>nicht</em> <code>Tim</code> heissen.</p>
-<p>Erstelle eine weitere <code>SELECT</code>-Anweisung, die alle Informationen über diejenigen Mitarbeitenden ausgibt, deren Salär über 6’000 liegt.</p>
-<p>In allen Fällen ist die Ausgabereihenfolge unwichtig.</p>
-<p>Anstelle <code>NAME &lt;&gt; &#39;Tim&#39;</code> kann man auch <code>NAME != &#39;Tim&#39;</code> verwenden.</p>
-</section>
-<section id="b-between" class="level2">
-<h2 class="anchored" data-anchor-id="b-between">b) BETWEEN</h2>
-<p>Erstelle eine Anweisung, die alle Informationen über diejenigen Mitarbeitenden ausgibt, deren Salär zwischen 6’000 und 6’500 liegt. Dabei sollen Mitarbeitende, deren Salär direkt an der Grenze (6’000 resp. 6’500) liegt, ebenfalls berücksichtigt werden. Verwende dabei das Schlüsselwort <code>BETWEEN</code>.</p>
-<p>Erstelle eine Anweisung ohne <code>BETWEEN</code>, die das gleiche Resultat liefert. Verwende Vergleiche und den Booleschen Operator <code>AND</code>.</p>
-<p>In beiden Fällen sollen die Datensätze nach Salär aufsteigend sortiert werden.</p>
-</section>
-</section>
-<section id="aufgabe-6-null---das-unbekannte-nichts" class="level1">
-<h1>Aufgabe 6: <code>NULL</code> - Das unbekannte Nichts</h1>
-<section id="a-null-in-vergleichen" class="level2">
-<h2 class="anchored" data-anchor-id="a-null-in-vergleichen">a) <code>NULL</code> in Vergleichen</h2>
-<p>Das Schlüsselwort <code>NULL</code> steht in SQL-Datenbankumfeld für <em>leer</em>, <em>unbekannt</em>, <em>kein Wert</em> etc. Dies tritt dann auf, wenn etwa bei optionalen Angaben zu Geschlecht, Telefonnummer oder Anzahl der Kinder nichts angegeben wird. So macht es einen Unterschied, ob jemand bei <em>Anzahl Kinder</em> den Zahlenwert <code>0</code> angibt oder keine Angabe macht. Im ersten Fall steht fest, dass die Person keine Kinder hat; im zweiten Fall ist unklar, ob sie Kinder hat – und wenn ja, wie viele.</p>
-<p>In der Tabelle <code>EMPLO</code> ist das Attribut <code>REPORTS_TO</code> optional, d.h. es kann Datensätze geben, bei denen dieses Attribut leer ist.</p>
-<p>Die folgende Anweisung zeigt, dass es genau eine solche Person gibt:<br>
-<code>SELECT ID, NAME, JOB, REPORTS_TO FROM EMPLO WHERE REPORTS_TO IS NULL</code></p>
+<section id="c-insert-select-anweisung" class="level2">
+<h2 class="anchored" data-anchor-id="c-insert-select-anweisung">c) <code>INSERT-SELECT</code>-Anweisung</h2>
+<p>Füge der Tabelle <code>UE_EMPLO</code> alle Datensätze von Mitarbeitenden aus <code>EMPLO</code> hinzu, deren Salär unter <code>4800</code> liegt. Formuliere eine SQL-Anweisung, die dies einmalig und in einer einzigen Anweisung leistet, wobei die Werte von <code>JOB</code> nicht übernommen werden sollen. Beachte, dass in <code>UE_EMPLO</code> nicht alle Attribute aus <code>EMPLO</code> vorhanden sind.<br>
+Das gewünschte Ergebnis sieht dann so aus:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>ID</th>
 <th>NAME</th>
 <th>JOB</th>
-<th>REPORTS_TO</th>
+<th>SALARY</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>16051</td>
-<td>Bea</td>
-<td>CEO</td>
+<td>16000</td>
+<td>Mio</td>
 <td></td>
-</tr>
-</tbody>
-</table>
-<p>Hierbei handelt es sich um den oder die CEO des Bike-Verleih, was erklärt, warum <code>REPORTS_TO</code> leer ist. Denn bekanntermassen haben CEOs keine direkten Vorgesetzten.</p>
-<p>Gib mit einer SQL-Anweisung die Anzahl der Mitarbeitenden mit direkten Vorgesetzten (als Attribut <code>W_MGR</code>) und in einer weiteren Anweisung die Anzahl der Mitarbeitenden ohne direkten Vorgesetzten (als Attribut <code>WO_MGR</code>) aus.</p>
-<p>Versuche in einer dritten SQL-Anweisung, die Gesamtzahl der Mitarbeitenden, die Zahl der Mitarbeitenden mit sowie die Zahl der Mitarbeitenden ohne direkten Vorgesetzten auszugeben.<br>
-Tipp: Verwende auch <code>COUNT( REPORTS_TO )</code>.</p>
-</section>
-</section>
-<section id="aufgabe-7-join---verbinden-von-tabellen" class="level1">
-<h1>Aufgabe 7: JOIN - Verbinden von Tabellen</h1>
-<section id="a-inner-join---verschiedene-varianten" class="level2">
-<h2 class="anchored" data-anchor-id="a-inner-join---verschiedene-varianten">a) INNER JOIN - Verschiedene Varianten</h2>
-<p>Gib für jeden Mitarbeitenden die <code>ID</code>, den Namen als <code>ENAME</code> sowie den Namen des Shops als <code>SNAME</code> aus, dem er oder sie zugeordnet ist. Die Reihenfolge der Ausgabe soll nach der <code>ID</code> der Mitarbeitenden aufsteigend erfolgen.</p>
-<p>Erstelle zwei SQL-Anweisungen in unterschiedlicher JOIN-Syntax, die dieses Ergebnis liefern.</p>
-</section>
-<section id="b-join---attribute-mit-und-ohne-tabellen-spezifikation" class="level2">
-<h2 class="anchored" data-anchor-id="b-join---attribute-mit-und-ohne-tabellen-spezifikation">b) JOIN - Attribute mit und ohne Tabellen-Spezifikation</h2>
-<p>Wir betrachten hier die Tabellen <code>EMPLO</code> und <code>ADDRESS</code>, die über <code>EMPLO.ADDRESS</code> und <code>ADDRESS.ID</code> inhaltlich verbunden sind.</p>
-<p>Welche Mitarbeitenden wohnen im Kanton (<code>STATE</code>) Wallis (<code>VS</code>), aber nicht in der Stadt (<code>CITY</code>) <code>Visp</code>? Gib die Namen der Mitarbeitenden und ihren Wohnort (<code>CITY</code>) aus, sortiert nach Mitarbeitendenname.</p>
-<p>Erstelle eine erste Anweisung, bei der jedes Attribut den voll qualifizierten Namen enthält, wie z.B. <code>EMPLO.NAME</code>.</p>
-<p>In der zweiten Anweisung soll auf die Angabe von Tabellennamen nach Möglichkeit verzichtet werden. In welchen Fällen ist dies möglich, in welchen nicht?</p>
-<p>Folgendes Resultat wird erwartet:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>NAME</th>
-<th>CITY</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Corinne</td>
-<td>Zermatt</td>
+<td>4700</td>
 </tr>
 <tr class="even">
-<td>Silvan</td>
-<td>Zermatt</td>
+<td>16048</td>
+<td>Leo</td>
+<td></td>
+<td>4100</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_EMPLO(<span class="kw">ID</span>, NAME, JOB, SALARY)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, <span class="kw">NULL</span>, SALARY</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&lt;</span> <span class="dv">4800</span>;</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">--alternativ: ohne Attribut JOB</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_EMPLO(<span class="kw">ID</span>, NAME, SALARY)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, SALARY</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&lt;</span> <span class="dv">4800</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Sehr fortgeschrittene Aufgabe:</em><br>
+Erweitere die vorherige Anweisung, so dass diese ausgeführt werden kann, unabhängig davon, ob und welche <code>ID</code>s in der Zieltabelle bereits vergeben sind. Dabei ist für jeden neuen Eintrag gegebenenfalls eine neue <code>ID</code> zu wählen, etwa so, dass man sich am Maximum der bereits vergebenen Werte orientiert.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_EMPLO(<span class="kw">ID</span>, NAME, SALARY)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  S.<span class="kw">ID</span> <span class="op">+</span> <span class="fu">GREATEST</span>(<span class="dv">0</span>, (<span class="kw">SELECT</span> <span class="fu">COALESCE</span>(<span class="fu">MAX</span>(<span class="kw">ID</span>), <span class="dv">0</span>) <span class="kw">FROM</span> UE_EMPLO) <span class="op">-</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         (<span class="kw">SELECT</span> <span class="fu">MIN</span>(<span class="kw">ID</span>) <span class="kw">FROM</span> EMPLO <span class="kw">WHERE</span> SALARY<span class="op">&lt;</span><span class="dv">4800</span>) <span class="op">+</span> <span class="dv">1</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  S.NAME, </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  S.SALARY</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> EMPLO S</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY<span class="op">&lt;</span><span class="dv">4800</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Diese Lösung sucht zunächst die kleinste einzufügende <code>ID</code>. Dieser wird bei der Übernahme das Maximum der bisher vergebenen <code>ID</code>s <code>+ 1</code> zugeordnet. Alle weiteren hinzugefügten neuen <code>ID</code>s richten sich mittels Abstand daran aus.</p>
+<p>In einem realistischen Use-Case würde man die bisherige <code>ID</code> in einem zusätzlichen nicht-Schlüssel-Attribut unverändert übernehmen. Zudem wird man die Funktion <code>ROW_NUMBER()</code> einsetzen, um Lücken zu vermeiden. Noch einfacher ist die Verwendung eines <em>Autoincrement</em>-Attributs (<code>GENERATED AS IDENTITY</code>) als Primärschlüsselattribut.</p>
 </section>
 </section>
-<section id="aufgabe-8-join---komplexeres-beispiel" class="level1">
-<h1>Aufgabe 8: JOIN - Komplexeres Beispiel</h1>
-<p>Im Bike-Verleih-Szenario können Kunden verschiedene Bikes ausleihen. Die beteiligten Tabellen sind <code>CUSTOMER</code>, <code>RENTAL</code> und <code>BIKE</code>. Wir interessieren uns für Kunden, die vor dem 15. März 2025 (mindestens einmal) ein Bike mit Rahmengrösse XL geliehen haben, das kein E-Bike ist.</p>
-<section id="a-join-mehrerer-tabellen" class="level2">
-<h2 class="anchored" data-anchor-id="a-join-mehrerer-tabellen">a) JOIN mehrerer Tabellen</h2>
-<p>Formuliere eine SQL-Anweisung, mit der die <code>ID</code> der Ausleihen, <code>ID</code> der Kunden, Name der Kunden und Modell des ausgeliehenen Bikes ausgegeben werden kann, die der genannten Bedingung entsprechen. Die Ausgabe soll nach <code>ID</code> der Ausleihen sortiert sein. Das erwartete Resultat hat folgende Form:</p>
+<section id="aufgabe-2-update-anweisungen" class="level1">
+<h1>Aufgabe 2: <code>UPDATE</code>-Anweisungen</h1>
+<p>Stelle für diese Aufgabe sicher, dass die Tabelle <code>UE_EMPLO</code> jeweils die entsprechenden Datensätze aus <code>EMPLO</code> enthält. Dies erreicht man etwa folgendermassen:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> UE_EMPLO;</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_EMPLO( <span class="kw">ID</span>, NAME, JOB, SALARY )</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, JOB, SALARY <span class="kw">FROM</span> EMPLO;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="a-einfaches-update" class="level2">
+<h2 class="anchored" data-anchor-id="a-einfaches-update">a) Einfaches <code>UPDATE</code></h2>
+<p>Gib eine SQL-Anweisung an, die in <code>UE_EMPLO</code> für den Datensatz mit der <code>ID</code> <code>16038</code> den Namen von ‘David’ auf ‘David E.’ ändert und das Salär um 10 erhöht.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> UE_EMPLO <span class="kw">SET</span> NAME <span class="op">=</span> <span class="st">&#39;David E.&#39;</span>, SALARY <span class="op">=</span> SALARY <span class="op">+</span> <span class="dv">10</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">ID</span> <span class="op">=</span> <span class="dv">16038</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Gib eine SQL-Anweisung an, die in <code>UE_EMPLO</code> in allen Datensätzen, die keinen Job angegeben haben (<code>NULL</code>), den Namen löscht, d.h. auf <code>NULL</code> setzt.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> UE_EMPLO <span class="kw">SET</span> NAME <span class="op">=</span> <span class="kw">NULL</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> JOB <span class="kw">IS</span> <span class="kw">NULL</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Beachte die unterschiedliche Verwendung von ‘<code>= NULL</code>’ in der <code>SET</code>-Klausel und ‘<code>IS NULL</code>’ in der <code>WHERE</code>-Klausel.</p>
+</section>
+<section id="a-mehrfaches-update" class="level2">
+<h2 class="anchored" data-anchor-id="a-mehrfaches-update">a) Mehrfaches <code>UPDATE</code></h2>
+<p>Gib SQL-Anweisungen an, die folgende Gehaltserhöhung für Mitarbeitende umsetzen:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>RID</th>
-<th>KUNDE_ID</th>
-<th>KUNDE_NAME</th>
-<th>MODELL</th>
+<th style="text-align: right;">Bedingung an Salär</th>
+<th style="text-align: center;">Änderung des Salärs</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>60004</td>
-<td>50151</td>
-<td>Tom</td>
-<td>CityLite</td>
+<td style="text-align: right;">unter <code>5000</code></td>
+<td style="text-align: center;"><code>+ 5%</code></td>
 </tr>
 <tr class="even">
-<td>60052</td>
-<td>50150</td>
-<td>Marie</td>
-<td>CityLite</td>
+<td style="text-align: right;">zwischen <code>5000</code> und <code>8000</code></td>
+<td style="text-align: center;"><code>+ 4%</code></td>
 </tr>
 <tr class="odd">
-<td>…</td>
-<td>…</td>
-<td>…</td>
-<td>…</td>
+<td style="text-align: right;">alle anderen</td>
+<td style="text-align: center;"><code>+ 3%</code></td>
 </tr>
 </tbody>
 </table>
-<p>Hier lassen sich Aliasnamen für Tabellen einsetzen, um die Anweisung übersichtlicher zu gestalten. Um eine solche mehrfach verknüpfte Anweisung zu erstellen, wird man zunächst diejenigen Tabellen ermitteln, die für die gewünschte Information benötigt werden. Das sind hier die bereits genannten <code>RENTAL</code>, <code>CUSTOMER</code> und <code>BIKE</code>.</p>
-<p>Danach kümmert man sich um die Verknüpfungen, die für die jeweiligen <code>JOIN</code>-Bedingungen relevant sind, und formuliert die Verknüpfungen. Hier kann man auch schrittweise vorgehen, solange man in der <code>SELECT</code>-Klausel nicht die vollständige Information verlangt.</p>
-<p>Den ersten Schritt könnte man etwa so gestalten:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   R.<span class="kw">ID</span> <span class="kw">AS</span> RID, </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   C.<span class="kw">ID</span> <span class="kw">AS</span> KUNDE_ID, </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>   C.NAME <span class="kw">AS</span> KUNDE_NAME</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> CUSTOMER C <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Anschliessend fährt man mit der Tabelle <code>BIKE</code> in einem weiteren <code>JOIN</code> fort und ergänzt das noch fehlende Attribut <code>B.MODELL</code> in der <code>SELECT</code>-Klausel.</p>
-</section>
-<section id="b-eindeutigkeit-mit-countdistinct" class="level2">
-<h2 class="anchored" data-anchor-id="b-eindeutigkeit-mit-countdistinct">b) Eindeutigkeit mit COUNT(DISTINCT)</h2>
-<p>Verwende das Resultat der vorherigen Teilaufgabe und formuliere eine SQL-Anweisung, mit der die Anzahl der Ausleihen (als <code>ANZ_RT</code>), die Anzahl der Kunden (<code>ANZ_C</code>), die Anzahl der unterschiedlichen Namen von Kunden (<code>ANZ_NAME</code>) und die Anzahl der unterschiedlichen Bike-Modelle (<code>ANZ_MODELL</code>) ausgegeben werden. Erwartet wird das folgende Resultat:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>ANZ_RT</th>
-<th>ANZ_C</th>
-<th>ANZ_NAME</th>
-<th>ANZ_MODELL</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>13</td>
-<td>11</td>
-<td>7</td>
-<td>5</td>
-</tr>
-</tbody>
-</table>
-<p>Tipp: Verwende Ausdrücke wie <code>COUNT(DISTINCT C.ID)</code>, um die Anzahl unterschiedlicher Werte zu ermitteln.</p>
+<p>Im Idealfall verwendet man eine einzige Anweisung.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">--Lösung schrittweise. Reihenfolge muss beachtet werden. Warum?</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> UE_EMPLO <span class="kw">SET</span> SALARY <span class="op">=</span> SALARY <span class="op">*</span> <span class="fl">1.03</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&gt;</span> <span class="dv">8000</span>;</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> UE_EMPLO <span class="kw">SET</span> SALARY <span class="op">=</span> SALARY <span class="op">*</span> <span class="fl">1.04</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="kw">BETWEEN</span> <span class="dv">5000</span> <span class="kw">AND</span> <span class="dv">8000</span>;</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> UE_EMPLO <span class="kw">SET</span> SALARY <span class="op">=</span> SALARY <span class="op">*</span> <span class="fl">1.05</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&lt;</span> <span class="dv">5000</span>;</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">--ein einziges Statement</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> UE_EMPLO </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>   <span class="kw">SET</span> SALARY <span class="op">=</span> </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> SALARY <span class="op">&lt;</span> <span class="dv">5000</span> <span class="cf">THEN</span> SALARY <span class="op">*</span> <span class="fl">1.05</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>           <span class="cf">WHEN</span> SALARY <span class="kw">BETWEEN</span> <span class="dv">5000</span> <span class="kw">AND</span> <span class="dv">8000</span> <span class="cf">THEN</span> SALARY <span class="op">*</span> <span class="fl">1.04</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>           <span class="cf">ELSE</span> SALARY <span class="op">*</span> <span class="fl">1.03</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">END</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="aufgabe-9-self-join" class="level1">
-<h1>Aufgabe 9: Self-JOIN</h1>
-<p>In der Tabelle <code>EMPLO</code> wird neben der <code>ID</code> und dem Namen der Mitarbeitenden im Attribut <code>REPORTS_TO</code> auch die <code>ID</code> des oder der Vorgesetzten abgelegt, sofern es eine/n gibt.</p>
-<p>Formuliere eine SQL-Anweisung, die den Namen der Mitarbeitenden, gefolgt vom Namen des/r Vorgesetzten ausgibt. Es sollen nur die Mitarbeitenden angezeigt werden, welche Vorgesetzte haben, und zwar sortiert nach <code>ID</code> des/r Mitarbeitenden. Diese Aufgabe zeigt, dass nach Attributen sortiert werden kann, auch wenn diese nicht in der Ergebnismenge ausgegeben werden.</p>
-<p>Hier das erwartete Resultat (ersten beiden Datensätze):</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>ENAME</th>
-<th>MNAME</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Mia</td>
-<td>Luca</td>
-</tr>
-<tr class="even">
-<td>Luca</td>
-<td>Bea</td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>Tipp: Selektiere zweimal von der gleichen Tabelle, die Du durch <code>JOIN</code> verknüpfst, und verwende Aliasnamen für die Tabellen. Wenn wie hier mehrere gleiche Attributnamen vorkommen, werden auch Spalten-Aliase empfohlen.</p>
+<section id="aufgabe-3-update-anweisungen-mit-subselect" class="level1">
+<h1>Aufgabe 3: <code>UPDATE</code>-Anweisungen mit Subselect</h1>
+<p>Stelle für diese Aufgabe wieder sicher, dass die Tabelle <code>UE_EMPLO</code> genau die entsprechenden Datensätze aus <code>EMPLO</code> enthält. Dies erreicht man etwa folgendermassen:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> UE_EMPLO;</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_EMPLO( <span class="kw">ID</span>, NAME, JOB, SALARY )</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, JOB, SALARY <span class="kw">FROM</span> EMPLO;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formuliere eine SQL-Anweisung, die bei allen Mitarbeitenden, deren Salär niedriger als das Durchschnittssalär ist, das Salär erhöht und zwar um 5%.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> UE_EMPLO <span class="kw">SET</span> SALARY <span class="op">=</span> SALARY <span class="op">*</span> <span class="fl">1.05</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&lt;</span> ( <span class="kw">SELECT</span> <span class="fu">AVG</span>(SALARY) <span class="kw">FROM</span> UE_EMPLO)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Stelle anschliessend wieder den ursprünglichen Zustand der Tabelle <code>UE_EMPLO</code> her und formuliere eine SQL-Anweisung, mit der folgendes erreicht wird: Alle Mitarbeitenden, deren Salär höher als das Durchschnittssalär der Mitarbeitenden des gleichen Jobs (<code>JOB</code>) ist, sollen eine Erhöhung um den Betrag <code>111</code> erhalten.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> UE_EMPLO UE <span class="kw">SET</span> SALARY <span class="op">=</span> SALARY <span class="op">+</span> <span class="dv">111</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> SALARY <span class="op">&gt;</span> ( <span class="kw">SELECT</span> <span class="fu">AVG</span>(SALARY) <span class="kw">FROM</span> UE_EMPLO <span class="kw">WHERE</span> JOB <span class="op">=</span> UE.JOB)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Um das Resultat zu prüfen, kann man mit der Originaltabelle vergleichen:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> UE.<span class="kw">ID</span>, UE.NAME, E.SALARY S_OLD, UE.SALARY S_NEW <span class="kw">FROM</span> UE_EMPLO UE </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> EMPLO E <span class="kw">ON</span> UE.<span class="kw">ID</span> <span class="op">=</span> E.<span class="kw">ID</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> E.SALARY <span class="op">&lt;&gt;</span> UE.SALARY</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> UE.<span class="kw">ID</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Das Resultat liefert 6 Datensätze.</p>
+</section>
+<section id="aufgabe-4-delete-anweisungen" class="level1">
+<h1>Aufgabe 4: <code>DELETE</code>-Anweisungen</h1>
+<section id="a-mehrfaches-löschen" class="level2">
+<h2 class="anchored" data-anchor-id="a-mehrfaches-löschen">a) Mehrfaches Löschen</h2>
+<p>Lösche in der Tabelle <code>UE_EMPLO</code> den Datensatz mit <code>ID</code> <code>16000</code>. Was passiert, wenn Du versuchst, diesen Datensatz nochmal zu löschen?</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> UE_EMPLO <span class="kw">WHERE</span> <span class="kw">ID</span> <span class="op">=</span> <span class="dv">16000</span>;</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> UE_EMPLO <span class="kw">WHERE</span> <span class="kw">ID</span> <span class="op">=</span> <span class="dv">16000</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Beim erfolgreichen Löschen erhält man als Rückmeldung die Anzahl der gelöschten Datensätze, also <code>1</code> beim erstmaligen und <code>0</code> bei weiteren Aufrufen. Der Löschversuch eines nicht vorhandenen Datensatzes resp. mit einer <code>WHERE</code>-Klausel, die immer falsch ist, führt nicht zu einem Fehler.</p>
+</section>
+<section id="b-delete-ohne-where-klausel" class="level2">
+<h2 class="anchored" data-anchor-id="b-delete-ohne-where-klausel">b) <code>DELETE</code> ohne <code>WHERE</code>-Klausel</h2>
+<p>In der <code>WHERE</code>-Klausel werden bei <code>DELETE</code>-Anweisungen die Datensätze spezifiziert, die gelöscht werden sollen. Was passiert, wenn keine <code>WHERE</code>-Klausel vorhanden ist? Erkläre das Verhalten.</p>
+<p><strong>Lösung:</strong><br>
+Bei <code>DELETE</code>-Anweisungen ohne <code>WHERE</code>-Klausel werden <strong>alle</strong> Datensätze der Tabelle gelöscht. Eine <code>WHERE</code>-Klausel dient zum Einschränken der zu löschenden Datensätze. Ist sie nicht vorhanden, gibt es keine solche Einschränkung. Dies entspricht dem Verhalten einer <code>SELECT</code>-Anweisung, bei der ohne <code>WHERE</code>-Klausel ebenfalls alle Datensätze selektiert und angezeigt werden.</p>
+</section>
+<section id="b-delete-mit-komplexeren-bedingungen" class="level2">
+<h2 class="anchored" data-anchor-id="b-delete-mit-komplexeren-bedingungen">b) <code>DELETE</code> mit komplexeren Bedingungen</h2>
+<p>Stelle zunächst sicher, dass die Tabelle <code>UE_EMPLO</code> die Datensätze aus <code>EMPLO</code> enthält:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> UE_EMPLO;</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> UE_EMPLO( <span class="kw">ID</span>, NAME, JOB, SALARY )</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, JOB, SALARY <span class="kw">FROM</span> EMPLO;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Formuliere eine SQL-Anweisung, die alle Datensätze von Mitarbeitenden in <code>UE_EMPLO</code> löscht, deren Name (<code>NAME</code>) mehr als einmal vorkommt.</p>
+<p><strong>Lösung:</strong></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> UE_EMPLO </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> NAME <span class="kw">IN</span> (<span class="kw">SELECT</span> NAME <span class="kw">FROM</span> EMPLO <span class="kw">GROUP</span> <span class="kw">BY</span> NAME <span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>)<span class="op">&gt;</span><span class="dv">1</span> )</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Stelle anschliessend den ursprünglichen Zustand der Tabelle her. Formuliere eine SQL-Anweisung, mit der in <code>UE_EMPLO</code> pro Datensatz-Gruppe mit gleichem Namen alle Datensätze bis auf den mit der grössten <code>ID</code> gelöscht werden. Diese Anweisung löscht also nicht alle Datensätze von mehrfachvorkommenden Namen, sondern belässt den mit der jeweils grössten <code>ID</code>.</p>
+<p><strong>Lösung:</strong><br>
+Grundsätzlich sollte man bei komplexeren <code>DELETE</code>-Anweisungen zunächst analaog eine <code>SELECT</code>-Anweisung mit gleicher <code>WHERE</code>-Klausel formulieren und das Ergebnis kontrollieren.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> UE_EMPLO E </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">ID</span> <span class="kw">NOT</span> <span class="kw">IN</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>   (<span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="kw">ID</span>) <span class="kw">FROM</span> UE_EMPLO <span class="kw">GROUP</span> <span class="kw">BY</span> NAME)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 </section>
 
 </main>
