@@ -3593,7 +3593,7 @@ Tipp: Verwende auch <code>COUNT( REPORTS_TO )</code>.</p>
 <p>Tipp: Verwende Ausdrücke wie <code>COUNT(DISTINCT C.ID)</code>, um die Anzahl unterschiedlicher Werte zu ermitteln.</p>
 <p><strong>Lösung:</strong></p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">DISTINCT</span> R.<span class="kw">ID</span> <span class="kw">AS</span> ANZ_RT,   <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> C.<span class="kw">ID</span>) <span class="kw">AS</span> ANZ_C, </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(R.<span class="kw">ID</span>) <span class="kw">AS</span> ANZ_RT,   <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> C.<span class="kw">ID</span>) <span class="kw">AS</span> ANZ_C, </span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> C.NAME) <span class="kw">AS</span> ANZ_NAME, <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> B.MODELL) <span class="kw">AS</span> ANZ_MODELL </span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> RENTAL R</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> CUSTOMER C <span class="kw">ON</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> </span>

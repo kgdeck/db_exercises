@@ -3304,7 +3304,8 @@ Verwende für den ersten Teil die vorherige Teilaufgabe. Beachte, dass Kunden ni
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">--mit EXISTS:</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> C.<span class="kw">ID</span>, C.NAME <span class="kw">FROM</span> </span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>CUSTOMER C </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">EXISTS</span>( <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> RENTAL R <span class="kw">WHERE</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> );</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">EXISTS</span>( <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> RENTAL R <span class="kw">WHERE</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> )</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> C.<span class="kw">ID</span>;</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Kunden, die bisher noch keine Bikes ausgeliehen haben:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> C.<span class="kw">ID</span>, C.NAME </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> CUSTOMER C </span>
@@ -3315,13 +3316,15 @@ Verwende für den ersten Teil die vorherige Teilaufgabe. Beachte, dass Kunden ni
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">--mit EXISTS:</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> C.<span class="kw">ID</span>, C.NAME <span class="kw">FROM</span> </span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>CUSTOMER C </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span>( <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> RENTAL R <span class="kw">WHERE</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> );</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span>( <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> RENTAL R <span class="kw">WHERE</span> R.CUSTOMER <span class="op">=</span> C.<span class="kw">ID</span> )</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> C.<span class="kw">ID</span>;   </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Der Trick bei der ersten Anweisung besteht darin, diejenigen Datensätze nach dem <code>LEFT JOIN</code> herauszufiltern, die mit <code>NULL</code> ergänzt wurden, d. h. die, für die es keine wahre <code>ON</code>-Bedingung gibt, also keine Ausleihen.</p>
 </section>
 <section id="c-anzahl-der-kunden" class="level2">
 <h2 class="anchored" data-anchor-id="c-anzahl-der-kunden">c) Anzahl der Kunden</h2>
 <p>Wie viele Kunden gibt es insgesamt, wie viele haben ein Bike des Modells ‘Pathway’ ausgeliehen und wie viele haben kein solches Modell ausgeliehen.</p>
 <p><strong>Lösung:</strong></p>
+<p>Insgesamt gibt es <code>167</code> Kunden, von denen <code>14</code> ein Bike eines solchen Modells ausgeliehen haben und <code>153</code> nicht.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Alle Kunden</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> CT <span class="kw">FROM</span> CUSTOMER;</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3382,7 +3385,7 @@ Zusätzlich soll angegeben werden, wie viele Mitarbeitenden es insgesamt gibt un
 <td>24</td>
 <td>5’457</td>
 <td>23</td>
-<td>1’114</td>
+<td>1’119</td>
 <td>21</td>
 </tr>
 </tbody>
@@ -3432,7 +3435,7 @@ Das Resultat hat die folgende Form:</p>
 <td>4</td>
 <td>5’157</td>
 <td>4</td>
-<td>1’295</td>
+<td>1’300</td>
 <td>3</td>
 </tr>
 <tr class="even">
@@ -3440,7 +3443,7 @@ Das Resultat hat die folgende Form:</p>
 <td>4</td>
 <td>5’425</td>
 <td>4</td>
-<td>930</td>
+<td>935</td>
 <td>4</td>
 </tr>
 <tr class="odd">
