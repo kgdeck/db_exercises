@@ -26,9 +26,7 @@ show_solutions: false
 ---
 
 # Einleitung
-In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, fortgeschrittene SQL-Techniken wie Outer Join, Group-by, Aggregationen und einfache Subselects zu erlernen und zu vertiefen. 
-
-Die Aufgaben 6, 7 und 8 behandeln komplexere Subselects und sind optional. 
+In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, fortgeschrittene SQL-Techniken wie Outer Join, Group-by, Aggregationen und einfache Subselects zu erlernen und vertiefen. 
 
 # Voraussetzungen
 Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres)  mit den Tabellen des Bike-Verleih-Szenarios und hast Grundkenntnisse in SQL, etwa indem Du die vorherigen Übungen erfolgreich absolviert hast.
@@ -81,7 +79,7 @@ LEFT OUTER JOIN SHOP S ON E.SHOP = S.ID
 ::: {.content-hidden unless-meta="show_solutions"}
 **Lösung:**
 
-Die Anzahl der Datensätze beim `LEFT OUTER JOIN` ist `24`, beim `INNER JOIN` ist sie `22` und beim `FULL OUTER JOIN` ist sie `25`.
+Die Anzahl der Datensätze beim `LEFT OUTER JOIN` ist `24`, beim `INNER JOIN` ist sie `22` und beim `FULL OUTER JOIN` ist sie '25'.
 
 ```sql
 SELECT COUNT(*)
@@ -97,7 +95,7 @@ FROM EMPLO E
 FULL OUTER JOIN SHOP S ON E.SHOP = S.ID;
 ```  
 
-Wie Du Dich leicht überzeugen kannst, gibt es genau 22 Mitarbeitende, die einem Shop zugeordnet sind, 2 Mitarbeitende, die keinem Shop zugeordnet sind und genau ein Shop, dem keine Mitarbeitende zugeordnet sind.
+Wie Du Dich leicht überzeugen kannst, gibt es genau 22 Mitarbeitende, die einem Shop zugeordnet sind, 2 Mitarbeitende, die keinem Shop zugeordnet sind und genau ein Shop, dem kein Mitarbeitender zugeordnet ist.
 
 Die Datensätze des `INNER`-Join sind in der Resultatmenge des `LEFT OUTER`-Join enthalten, der mehr Datensätze haben kann, nämlich die Datensätze der ersten (linken) Tabelle, für die die `ON`-Bedingung nicht zutrifft. Bei einem `RIGHT OUTER`-Join kommen möglicherweise Datensätze der zweiten (rechten) Tabelle hinzu. Betrachtet man die Anzahl der Datensätze, so ist die Anzahl eines `INNER`-Join kleiner oder gleich der Anzahl des entsprechenden `LEFT OUTER`-Join sowie des `RIGHT OUTER`-Join und die Anzahl der Datensätze des `FULL`-Join ist grösser oder gleich der Anzahl des `LEFT OUTER`- resp. `RIGHT OUTER`-Join. Der `FULL OUTER`-Join enthält die Datensätze des `INNER JOIN` sowie die der linken und der rechten Tabelle, für die die `ON`-Bedingung nicht zutrifft.
 
@@ -126,7 +124,7 @@ Aus jeder Kurzform ergibt sich eindeutig die Verknüpfung, da `LEFT` resp. `RIGH
 
 :::
 
-# Aufgabe 2: Verknüpfungen
+# Aufgabe 2: Verknüpfungen und `EXISTS`
 
 Für diese Aufgabe benötigst Du die Tabellen `CUSTOMER`, `RENTAL` und `BIKE`, die Informationen über Bike-Ausleihen von Kunden enthalten.
 
@@ -162,9 +160,8 @@ Welche Kunden haben bisher noch keine Bikes ausgeliehen?
 Gib jeweils die Kunden-ID und den Namen der Person an, aufsteigend sortiert nach Kunden-ID.
 
 Tipp:   
-Verwende für den ersten Teil die vorherige Teilaufgabe. Beachte, dass Kunden nicht mehrfach genannt werden sollen. Für den zweiten Teil kann man einen `LEFT JOIN` verwenden und diejenigen Datensätze aus dem Resultat herausfiltern, für die die `ON`-Bedingung nicht zutrifft.   
-
-Alternative Lösungen: Verwendung SQL-Mengenoperationen (siehe spätere Übungen).
+Verwende für den ersten Teil die vorherige Teilaufgabe. Beachte, dass Kunden nicht mehrfach genannt werden sollen. Für den zweiten Teil kann man einen `LEFT JOIN` verwenden und diejenigen Datensätze aus dem Resultat herausfiltern, für die die `ON`-Bedingung nicht zutrifft. 
+(Alternativ kann man auch einen Subselect mit der SQL-Klausel `EXISTS` resp. `NOT EXISTS` verwenden.)
 
 ::: {.content-hidden unless-meta="show_solutions"}
 **Lösung:**
@@ -177,6 +174,11 @@ FROM RENTAL R
 JOIN CUSTOMER C ON R.CUSTOMER = C.ID
 ORDER BY C.ID;
 
+--mit EXISTS:
+SELECT C.ID, C.NAME FROM 
+CUSTOMER C 
+WHERE EXISTS( SELECT 1 FROM RENTAL R WHERE R.CUSTOMER = C.ID )
+ORDER BY C.ID;
 ```
 
 Kunden, die bisher noch keine Bikes ausgeliehen haben:
@@ -188,33 +190,71 @@ LEFT JOIN RENTAL R ON R.CUSTOMER = C.ID
 WHERE R.CUSTOMER IS  NULL 
 ORDER BY C.ID;
 
+--mit EXISTS:
+SELECT C.ID, C.NAME FROM 
+CUSTOMER C 
+WHERE NOT EXISTS( SELECT 1 FROM RENTAL R WHERE R.CUSTOMER = C.ID )
+ORDER BY C.ID;   
 ```
+
+Der Trick bei der ersten Anweisung besteht darin, diejenigen Datensätze nach dem `LEFT JOIN` herauszufiltern, die mit `NULL` ergänzt wurden, d. h. die, für die es keine wahre `ON`-Bedingung gibt, also keine Ausleihen.
 
 ::: 
 
 ## c) Anzahl der Kunden
 
-Wie viele Kunden gibt es insgesamt, wie viele haben ein Bike des Modells 'Pathway' ausgeliehen und wie viele haben kein solches Modell ausgeliehen?   
-
-Formuliere SQL-Anweisungen, mit denen die ersten beiden Fragen beantwortet werden können. Die Antwort der dritten Frage kannst Du dann (ohne SQL) mittels Subtraktion ermitteln. Alternativ wird in *Aufgabe 7* eine weitere Lösung vorgestellt.
+Wie viele Kunden gibt es insgesamt, wie viele haben ein Bike des Modells 'Pathway' ausgeliehen und wie viele haben kein solches Modell ausgeliehen.
 
 ::: {.content-hidden unless-meta="show_solutions"}
 **Lösung:**
 
-Insgesamt gibt es `167` Kunden, von denen `14` (mindestens einmal) ein Bike eines solchen Modells ausgeliehen haben. Demnach gibt es
-`153` Kunden, die bisher noch nie ein solches Bike ausgeliehen haben.
+Insgesamt gibt es `167` Kunden, von denen `14` ein Bike eines solchen Modells ausgeliehen haben und `153` nicht.
 
 ```sql
 -- Alle Kunden
 SELECT COUNT(*) AS CT FROM CUSTOMER;
 
 -- Kunden die ein 'Pathway' ausgeliehen haben
-SELECT COUNT(DISTINCT CUSTOMER) AS CT_PW 
-FROM RENTAL R 
-JOIN BIKE B ON R.BIKE = B.ID
-WHERE B.MODELL = 'Pathway'
+SELECT COUNT(*) AS CT_PW FROM CUSTOMER C
+WHERE EXISTS( 
+   SELECT 1 FROM RENTAL R 
+   JOIN BIKE B ON R.BIKE = B.ID 
+   WHERE B.MODELL = 'Pathway'
+      AND C.ID = R.CUSTOMER 
+);
 
-```    
+-- Kunden, die kein 'Pathway' ausgeliehen haben
+--    wie zuvor, anstelle 'EXISTS' verwende 'NOT EXISTS'
+SELECT COUNT(*) AS CT_NO_PW FROM CUSTOMER C
+WHERE NOT EXISTS( 
+   SELECT 1 FROM RENTAL R 
+   JOIN BIKE B ON R.BIKE = B.ID 
+   WHERE B.MODELL = 'Pathway'
+      AND C.ID = R.CUSTOMER 
+);
+```
+
+
+In einer einzigen Anweisung (hier gibt es unterschiedliche Varianten):
+
+```sql
+SELECT 
+   COUNT(CUST.ID) AS CT, 
+   COUNT(TAB.ID) AS CT_PW, 
+   COUNT(CUST.ID)-COUNT(TAB.ID) AS CT_NOPW 
+FROM CUSTOMER CUST
+LEFT JOIN
+(SELECT C.ID FROM CUSTOMER C 
+ WHERE EXISTS ( 
+   SELECT 1 
+   FROM RENTAL R 
+   JOIN BIKE B ON R.BIKE = B.ID 
+   WHERE B.MODELL = 'Pathway'
+      AND C.ID = R.CUSTOMER )
+) TAB ON TAB.ID = CUST.ID
+
+```
+
 :::
 
 
@@ -290,9 +330,7 @@ ORDER BY SHOP
 ## c) Average: Mehr Gehalt als der Durchschnitt
 
 Gebe eine SQL-Anweisung an, die ermittelt, wer mehr als der Durchschnitt verdient. Von den Mitarbeitenden soll die `ID`, der Name, das Salär, die Shop-ID ausgegeben werden, sortiert nach `ID`.  
-Gebe in einer weiteren SQL-Anweisung zusätzlich in jedem Datensatz das Durchschnittsgehalt (gerundet) aus. 
-
-Tipp: Verwende einfachen Subselect, der den Durchschnitt ermittelt.
+Gebe in einer weiteren SQL-Anweisung zusätzlich in jedem Datensatz das Durchschnittsgehalt (gerundet) aus.
 
 ::: {.content-hidden unless-meta="show_solutions"}
 **Lösung:**
@@ -302,7 +340,7 @@ SELECT ID, NAME, SALARY, SHOP FROM EMPLO
 WHERE SALARY > (SELECT AVG(SALARY) FROM EMPLO)
 ORDER BY ID;
 
-SELECT ID, NAME, SALARY, SHOP, ROUND(AVG_S) AS AVG_S FROM emplo
+SELECT ID, NAME, SALARY, SHOP, ROUND(AVG_S) AVG_SAL FROM emplo
 JOIN (SELECT AVG(SALARY) AVG_S FROM EMPLO)
 ON SALARY > AVG_S
 ORDER BY ID;
@@ -310,7 +348,48 @@ ORDER BY ID;
 
 :::
 
+## d) Average: Mehr Gehalt als der Durchschnitt pro Shop
 
+Formuliere SQL-Anweisungen, mit denen analog zur vorherigen Teilaufgabe alle Mitarbeitenden ausgegeben werden, die *mindestens so viel* wie der Durchschnitt der Mitarbeitenden des gleichen Shops erhalten. Die auszugebenden Attribute sind die gleichen, nur dass sich das Durchschnittsgehalt jetzt auf den Shop bezieht.
+
+::: {.content-hidden unless-meta="show_solutions"}
+**Lösung:**
+
+Wir beginnen mit dem Ermitteln des Durchschnittsgehalts pro Shop:
+
+```sql
+SELECT SHOP, AVG(SALARY) 
+FROM EMPLO
+GROUP BY SHOP
+```
+
+Nun verknüpft man jede Datenzeile aus `EMPLO` mit dem Resultat dieses `SELECT`, das für den passenden Shop das Durchschnittsgehalt liefert.
+
+```sql
+SELECT ID, NAME, SALARY, E.SHOP FROM EMPLO E
+JOIN (SELECT SHOP, AVG(SALARY) AVG_SAL_SH 
+      FROM EMPLO
+      GROUP BY SHOP) SUBSEL 
+ON SUBSEL.SHOP = E.SHOP 
+WHERE SALARY >= AVG_SAL_SH 
+```
+
+Da die Subselect-Anweisung bereits das Durchschnittsgehalt pro Shop ermittelt, lässt sich das Attribut `AVG_SAL_SH` einfach in die `SELECT`-Klausel der Gesamtanweisung aufnehmen.  
+Ergänzt werden muss die `ON`-Bedingung noch um den Zusatz, dass - wenn man die Aufgabenstellung so verstehen möchte - auch Mitarbeitende ohne Shop-Zuordnung ausgegeben werden, sofern sie mindestens so viel verdienen, wie der Durchschnitt aller solcher Mitarbeitenden.    
+Du kannst Dich gerne vom Effekt dieses Zusatzes überzeugen, indem Du ihn wahlweise aktiviert oder deaktivierst.
+
+```sql
+SELECT ID, NAME, SALARY, E.SHOP, ROUND(AVG_SAL_SH) AVG_SAL_SH FROM EMPLO E
+JOIN (SELECT SHOP, AVG(SALARY) AVG_SAL_SH 
+      FROM EMPLO
+      GROUP BY SHOP) SUBSEL 
+ON SUBSEL.SHOP = E.SHOP 
+   --die folgende Zeile aktivieren/deaktivieren
+   --OR (SUBSEL.SHOP IS NULL AND E.SHOP IS NULL)
+WHERE SALARY >= AVG_SAL_SH 
+```
+
+:::
 
 # Aufgabe 4: Mehrere GROUP-BY Attribute
 
@@ -340,7 +419,7 @@ Das erwartete Resultat sieht wie folgt aus:
 
 
 Tipps:
-Mit `EXTRACT( YEAR FROM RENTAL_DATE )` kann man das Jahr aus einem Datumswert ermitteln, analog mit `MONTH` auch den Monat.  
+Mit `EXTRACT( YEAR FROM RENTAL_DATE )` kann man das Jahr aus einem Datumswert ermitteln, analog auch den Monat.  
 Der Shop einer Ausleihe lässt sich ermitteln, indem man beachtet, welchem Shop das ausgeliehene Bike zugeordnet ist.
 
 ::: {.content-hidden unless-meta="show_solutions"}
@@ -372,11 +451,7 @@ ORDER BY RENTAL_YEAR, RENTAL_MONTH, SHOP;
 
 # Aufgabe 5: GROUP-BY und HAVING
 
-Welche Bikes wurden vor dem 4. März 2025 mindestens 3 mal ausgeliehen? 
-
-Formuliere zunächst eine SQL-Anweisung, mit der die Bike-ID und die Häufigkeit der Ausleihe für das jeweilige Bike ausgegeben wird.
-
-In einer weiteren SQL-Anweisung soll die Bike-ID, das Modell und die Häufigkeit ausgegeben werden. Die Reihenfolge soll jeweils nach Bike-ID erfolgen.
+Welche Bikes wurden vor dem 4. März 2025 mindestens 3 mal ausgeliehen? Formuliere ein SQL-Anweisung, mit der die Bike-ID, Modell und die Häufigkeit der Ausleihe für dieses Bike ausgegeben werden. Die Reihenfolge soll nach Bike-ID erfolgen.
 
 ::: {.content-hidden unless-meta="show_solutions"}
 **Lösung:**
@@ -415,9 +490,7 @@ Resultat:
 
 :::
 
-Die folgenden Aufgaben verwenden komplexere SQL-Anweisungen, wie z.B. korrelierte Subselects, und sind optional.
-
-# Aufgabe 6: Subselect und `GROUP BY` (optional)
+# Aufgabe 6: Subselects
 
 Beantworte via SQL-Anweisungen die folgenden Fragen:
 
@@ -503,90 +576,3 @@ Die Resultate sind:
 :::
 
 
-# Aufgabe 7: Subselect und `OUTER JOIN` (optional)
-
-Wie viele Kunden gibt es insgesamt, wie viele haben ein Bike des Modells 'Pathway' ausgeliehen und wie viele haben kein solches Modell ausgeliehen?   
-
-Formuliere eine einzige SQL-Anweisung, welche diese Frage beantwortet. (In *Aufgabe 2 c)* wurden diese Fragen bereits beantwortet.)  
-
-Tipp: Selektiere alle Kunden und füge via `LEFT JOIN` Informationen über Ausleihen von Bikes des genannten Modells hinzu.
-
-::: {.content-hidden unless-meta="show_solutions"}
-**Lösung:**
-
-Die erste SQL-Anweisung ermittelt (eindeutige) Kunden-IDs von Kunden, welche die gesuchten Bikes ausgeliehen haben:
-
-```sql
-SELECT DISTINCT CUSTOMER 
-FROM RENTAL
-JOIN BIKE B ON BIKE = B.ID
-WHERE MODELL = 'Pathway'
- 
-```
-
-Dieser Ausdruck lässt sich nun in der Lösung einbringen, indem man ihn via `LEFT JOIN` an die Tabelle `CUSTOMER` anspielt. Das Resultat verwendet die Eigenschaft der Aggregatsfunktion `COUNT()`, die für ein angegebenes Attribut alle von `NULL` verschiedenen Werte zählt:
-
-```sql
-SELECT COUNT(ID) CT, COUNT(CUSTOMER) CT_PW, COUNT(ID)-COUNT(CUSTOMER) CT_NO_PW 
-FROM CUSTOMER 
-LEFT JOIN 
-(SELECT DISTINCT CUSTOMER 
- FROM RENTAL
- JOIN BIKE B ON BIKE = B.ID
- WHERE MODELL = 'Pathway'
- ) BIKE_RENTED
- ON ID = CUSTOMER
- 
-```    
-:::
-
-# Aufgabe 8: Subselect pro Gruppierung (optional)
-
-Formuliere SQL-Anweisungen, mit denen alle Mitarbeitenden ausgegeben werden, die *mindestens so viel* wie der Durchschnitt der Mitarbeitenden des *gleichen Shops* erhalten. Von den Mitarbeitenden soll die `ID`, der Name, das Salär, die Shop-ID und das Durchschnittsgehalt für den Shop (gerundet) ausgegeben werden, sortiert nach `ID`.  
-
-Tipp:   
-Orientiere Dich an *Aufgabe 3c)* und formuliere zunächst eine SQL-Anweisung, die Shop-ID und Durchschnittsgehalt pro Shop ermittelt.
-Diese Anweisung kann man via `JOIN` an die Tabelle `EMPLO` *anspielen*.
-
-
-::: {.content-hidden unless-meta="show_solutions"}
-**Lösung:**
-
-Wir beginnen mit dem Ermitteln des Durchschnittsgehalts pro Shop:
-
-```sql
-SELECT SHOP, AVG(SALARY) 
-FROM EMPLO
-GROUP BY SHOP
-```
-
-Nun verknüpft man jede Datenzeile aus `EMPLO` mit dem Resultat dieses `SELECT`, das für den passenden Shop das Durchschnittsgehalt liefert.
-
-```sql
-SELECT ID, NAME, SALARY, E.SHOP FROM EMPLO E
-JOIN (SELECT SHOP, AVG(SALARY) AVG_SAL_SH 
-      FROM EMPLO
-      GROUP BY SHOP) SUBSEL 
-ON SUBSEL.SHOP = E.SHOP 
-WHERE SALARY >= AVG_SAL_SH 
-```
-
-Da die Subselect-Anweisung bereits das Durchschnittsgehalt pro Shop ermittelt, lässt sich das Attribut `AVG_SAL_SH` einfach in die `SELECT`-Klausel der Gesamtanweisung aufnehmen.  
-Ergänzt werden muss die `ON`-Bedingung noch um den Zusatz, dass - wenn man die Aufgabenstellung so verstehen möchte - auch Mitarbeitende ohne Shop-Zuordnung ausgegeben werden, sofern sie mindestens so viel verdienen, wie der Durchschnitt aller solcher Mitarbeitenden.    
-Du kannst Dich gerne vom Effekt dieses Zusatzes überzeugen, indem Du ihn wahlweise aktiviert oder deaktivierst.
-
-```sql
-SELECT ID, NAME, SALARY, E.SHOP, ROUND(AVG_SAL_SH) AVG_SAL_SH FROM EMPLO E
-JOIN (SELECT SHOP, AVG(SALARY) AVG_SAL_SH 
-      FROM EMPLO
-      GROUP BY SHOP) SUBSEL 
-ON SUBSEL.SHOP = E.SHOP 
-   --die folgende Zeile aktivieren/deaktivieren
-   --OR (SUBSEL.SHOP IS NULL AND E.SHOP IS NULL)
-WHERE SALARY >= AVG_SAL_SH 
-```
-
-Alternative Lösungen kann man auch mit *korrelierten Subselect*-Anweisungen erhalten.
-
-
-:::

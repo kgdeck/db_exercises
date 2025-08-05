@@ -3106,7 +3106,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">24. Juli 2025</p>
+      <p class="date">5. August 2025</p>
     </div>
   </div>
   
@@ -3120,7 +3120,8 @@ vertical-align: -.125em;
 
 <section id="einleitung" class="level1">
 <h1>Einleitung</h1>
-<p>In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, fortgeschrittene SQL-Techniken wie Outer Join, Group-by, Aggregationen und einfache Subselects zu erlernen und vertiefen.</p>
+<p>In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, fortgeschrittene SQL-Techniken wie Outer Join, Group-by, Aggregationen und einfache Subselects zu erlernen und zu vertiefen.</p>
+<p>Die Aufgaben 6, 7 und 8 behandeln komplexere Subselects und sind optional.</p>
 </section>
 <section id="voraussetzungen" class="level1">
 <h1>Voraussetzungen</h1>
@@ -3183,8 +3184,8 @@ vertical-align: -.125em;
 <p>Begründe, warum ein <code>LEFT INNER</code>- oder <code>RIGHT INNER</code>-Join keinen Sinn macht und warum bei <code>LEFT OUTER</code>-, <code>RIGHT OUTER</code>- und <code>FULL OUTER</code>-Join das Schlüsselwort <code>OUTER</code> weggelassen werden kann. Erstelle eine Übersichtstabelle, in der die jeweilige Lang- und Kurzform der verschiedenen Joins aufgelistet sind.</p>
 </section>
 </section>
-<section id="aufgabe-2-verknüpfungen-und-exists" class="level1">
-<h1>Aufgabe 2: Verknüpfungen und <code>EXISTS</code></h1>
+<section id="aufgabe-2-verknüpfungen" class="level1">
+<h1>Aufgabe 2: Verknüpfungen</h1>
 <p>Für diese Aufgabe benötigst Du die Tabellen <code>CUSTOMER</code>, <code>RENTAL</code> und <code>BIKE</code>, die Informationen über Bike-Ausleihen von Kunden enthalten.</p>
 <section id="a-einfache-verknüpfung" class="level2">
 <h2 class="anchored" data-anchor-id="a-einfache-verknüpfung">a) Einfache Verknüpfung</h2>
@@ -3222,11 +3223,13 @@ vertical-align: -.125em;
 <p>Welche Kunden haben bisher noch keine Bikes ausgeliehen?</p>
 <p>Gib jeweils die Kunden-ID und den Namen der Person an, aufsteigend sortiert nach Kunden-ID.</p>
 <p>Tipp:<br>
-Verwende für den ersten Teil die vorherige Teilaufgabe. Beachte, dass Kunden nicht mehrfach genannt werden sollen. Für den zweiten Teil kann man einen <code>LEFT JOIN</code> verwenden und diejenigen Datensätze aus dem Resultat herausfiltern, für die die <code>ON</code>-Bedingung nicht zutrifft. (Alternativ kann man auch einen Subselect mit der SQL-Klausel <code>EXISTS</code> resp. <code>NOT EXISTS</code> verwenden.)</p>
+Verwende für den ersten Teil die vorherige Teilaufgabe. Beachte, dass Kunden nicht mehrfach genannt werden sollen. Für den zweiten Teil kann man einen <code>LEFT JOIN</code> verwenden und diejenigen Datensätze aus dem Resultat herausfiltern, für die die <code>ON</code>-Bedingung nicht zutrifft.</p>
+<p>Alternative Lösungen: Verwendung SQL-Mengenoperationen (siehe spätere Übungen).</p>
 </section>
 <section id="c-anzahl-der-kunden" class="level2">
 <h2 class="anchored" data-anchor-id="c-anzahl-der-kunden">c) Anzahl der Kunden</h2>
-<p>Wie viele Kunden gibt es insgesamt, wie viele haben ein Bike des Modells ‘Pathway’ ausgeliehen und wie viele haben kein solches Modell ausgeliehen.</p>
+<p>Wie viele Kunden gibt es insgesamt, wie viele haben ein Bike des Modells ‘Pathway’ ausgeliehen und wie viele haben kein solches Modell ausgeliehen?</p>
+<p>Formuliere SQL-Anweisungen, mit denen die ersten beiden Fragen beantwortet werden können. Die Antwort der dritten Frage kannst Du dann (ohne SQL) mittels Subtraktion ermitteln. Alternativ wird in <em>Aufgabe 7</em> eine weitere Lösung vorgestellt.</p>
 </section>
 </section>
 <section id="aufgabe-3-gruppierung-und-aggregatsfunktionen" class="level1">
@@ -3304,10 +3307,7 @@ Das Resultat hat die folgende Form:</p>
 <h2 class="anchored" data-anchor-id="c-average-mehr-gehalt-als-der-durchschnitt">c) Average: Mehr Gehalt als der Durchschnitt</h2>
 <p>Gebe eine SQL-Anweisung an, die ermittelt, wer mehr als der Durchschnitt verdient. Von den Mitarbeitenden soll die <code>ID</code>, der Name, das Salär, die Shop-ID ausgegeben werden, sortiert nach <code>ID</code>.<br>
 Gebe in einer weiteren SQL-Anweisung zusätzlich in jedem Datensatz das Durchschnittsgehalt (gerundet) aus.</p>
-</section>
-<section id="d-average-mehr-gehalt-als-der-durchschnitt-pro-shop" class="level2">
-<h2 class="anchored" data-anchor-id="d-average-mehr-gehalt-als-der-durchschnitt-pro-shop">d) Average: Mehr Gehalt als der Durchschnitt pro Shop</h2>
-<p>Formuliere SQL-Anweisungen, mit denen analog zur vorherigen Teilaufgabe alle Mitarbeitenden ausgegeben werden, die <em>mindestens so viel</em> wie der Durchschnitt der Mitarbeitenden des gleichen Shops erhalten. Die auszugebenden Attribute sind die gleichen, nur dass sich das Durchschnittsgehalt jetzt auf den Shop bezieht.</p>
+<p>Tipp: Verwende einfachen Subselect, der den Durchschnitt ermittelt.</p>
 </section>
 </section>
 <section id="aufgabe-4-mehrere-group-by-attribute" class="level1">
@@ -3383,21 +3383,36 @@ Gebe in einer weiteren SQL-Anweisung zusätzlich in jedem Datensatz das Durchsch
 </tr>
 </tbody>
 </table>
-<p>Tipps: Mit <code>EXTRACT( YEAR FROM RENTAL_DATE )</code> kann man das Jahr aus einem Datumswert ermitteln, analog auch den Monat.<br>
+<p>Tipps: Mit <code>EXTRACT( YEAR FROM RENTAL_DATE )</code> kann man das Jahr aus einem Datumswert ermitteln, analog mit <code>MONTH</code> auch den Monat.<br>
 Der Shop einer Ausleihe lässt sich ermitteln, indem man beachtet, welchem Shop das ausgeliehene Bike zugeordnet ist.</p>
 </section>
 <section id="aufgabe-5-group-by-und-having" class="level1">
 <h1>Aufgabe 5: GROUP-BY und HAVING</h1>
-<p>Welche Bikes wurden vor dem 4. März 2025 mindestens 3 mal ausgeliehen? Formuliere ein SQL-Anweisung, mit der die Bike-ID, Modell und die Häufigkeit der Ausleihe für dieses Bike ausgegeben werden. Die Reihenfolge soll nach Bike-ID erfolgen.</p>
+<p>Welche Bikes wurden vor dem 4. März 2025 mindestens 3 mal ausgeliehen?</p>
+<p>Formuliere zunächst eine SQL-Anweisung, mit der die Bike-ID und die Häufigkeit der Ausleihe für das jeweilige Bike ausgegeben wird.</p>
+<p>In einer weiteren SQL-Anweisung soll die Bike-ID, das Modell und die Häufigkeit ausgegeben werden. Die Reihenfolge soll jeweils nach Bike-ID erfolgen.</p>
+<p>Die folgenden Aufgaben verwenden komplexere SQL-Anweisungen, wie z.B. korrelierte Subselects, und sind optional.</p>
 </section>
-<section id="aufgabe-6-subselects" class="level1">
-<h1>Aufgabe 6: Subselects</h1>
+<section id="aufgabe-6-subselect-und-group-by-optional" class="level1">
+<h1>Aufgabe 6: Subselect und <code>GROUP BY</code> (optional)</h1>
 <p>Beantworte via SQL-Anweisungen die folgenden Fragen:</p>
 <ul>
 <li><p>An welchem Tag wurden erstmals Bikes ausgeliehen? Gib von allen Ausleihen, die an diesem Tag getätigt wurden, die ID, die Bike-ID und das Datum aus.</p></li>
 <li><p>Welche Kunden haben die meisten Ausleihen getätigt? Gib alle diese Kunden (Customer-ID) aus, zusammen mit der Anzahl der Ausleihen.</p></li>
 <li><p>Welche Kunden haben die meisten Bikes ausgeliehen? Gib alle diese Kunden (Customer-ID) aus, zusammen mit der Anzahl entliehener Bikes.</p></li>
 </ul>
+</section>
+<section id="aufgabe-7-subselect-und-outer-join-optional" class="level1">
+<h1>Aufgabe 7: Subselect und <code>OUTER JOIN</code> (optional)</h1>
+<p>Wie viele Kunden gibt es insgesamt, wie viele haben ein Bike des Modells ‘Pathway’ ausgeliehen und wie viele haben kein solches Modell ausgeliehen?</p>
+<p>Formuliere eine einzige SQL-Anweisung, welche diese Frage beantwortet. (In <em>Aufgabe 2 c)</em> wurden diese Fragen bereits beantwortet.)</p>
+<p>Tipp: Selektiere alle Kunden und füge via <code>LEFT JOIN</code> Informationen über Ausleihen von Bikes des genannten Modells hinzu.</p>
+</section>
+<section id="aufgabe-8-subselect-pro-gruppierung-optional" class="level1">
+<h1>Aufgabe 8: Subselect pro Gruppierung (optional)</h1>
+<p>Formuliere SQL-Anweisungen, mit denen alle Mitarbeitenden ausgegeben werden, die <em>mindestens so viel</em> wie der Durchschnitt der Mitarbeitenden des <em>gleichen Shops</em> erhalten. Von den Mitarbeitenden soll die <code>ID</code>, der Name, das Salär, die Shop-ID und das Durchschnittsgehalt für den Shop (gerundet) ausgegeben werden, sortiert nach <code>ID</code>.</p>
+<p>Tipp:<br>
+Orientiere Dich an <em>Aufgabe 3c)</em> und formuliere zunächst eine SQL-Anweisung, die Shop-ID und Durchschnittsgehalt pro Shop ermittelt. Diese Anweisung kann man via <code>JOIN</code> an die Tabelle <code>EMPLO</code> <em>anspielen</em>.</p>
 </section>
 
 </main>
