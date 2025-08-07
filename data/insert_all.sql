@@ -127,7 +127,7 @@ INSERT INTO BIKE_TYPE VALUES (6, 'Cargo', 'Lastenrad für Transport und Kinder')
 
 INSERT INTO BIKE VALUES (30000, 'Loadster', 'L', '29', 6, 0, 12, 10);
 INSERT INTO BIKE VALUES (30001, 'Loadster', 'XL', '28', 6, 1, 10.5, 10);
-INSERT INTO BIKE VALUES (30002, 'RockMaster', 'S', '28', 3, 1, 9.5, 10);
+INSERT INTO BIKE VALUES (30002, 'RockMaster', 'S', '28', 3, 1, null, 10);
 INSERT INTO BIKE VALUES (30003, 'RoadPro', 'M', '29', 4, 0, 12, 10);
 --INSERT INTO BIKE VALUES (30004, 'RoadPro', 'S', '27.5', 4, 0, 13, 11);
 --INSERT INTO BIKE VALUES (30005, 'SpeedMax', 'XL', '29', 4, 0, 15, 11);
@@ -191,7 +191,7 @@ INSERT INTO BIKE VALUES (30058, 'TrekStar', 'XL', '28', 2, 0, 18, 18);
 --INSERT INTO BIKE VALUES (30063, 'RockMaster', 'XL', '28', 3, 0, 12, 19);
 --INSERT INTO BIKE VALUES (30064, 'GravelX', 'M', '29', 5, 1, 12, 19);
 INSERT INTO BIKE VALUES (30065, 'TrekStar', 'S', '28', 2, 0, 14, 20);
-INSERT INTO BIKE VALUES (30066, 'SpeedMax', 'S', '26', 4, 0, 13, 20);
+INSERT INTO BIKE VALUES (30066, 'SpeedMax', 'S', '26', 4, 0, null, 20);
 INSERT INTO BIKE VALUES (30067, 'CargoGo', 'M', '29', 6, 0, 10.5, 20);
 INSERT INTO BIKE VALUES (30068, 'RockMaster', 'S', '29', 3, 0, 11, 20);
 INSERT INTO BIKE VALUES (30069, 'SpeedMax', 'M', '26', 4, 1, 14.5, 20);
