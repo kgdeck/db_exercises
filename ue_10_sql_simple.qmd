@@ -28,7 +28,7 @@ show_solutions: false
 In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, grundlegende SQL-Techniken wie Selektion, Bedingungen, Aggregation und Joins zu üben. 
 
 # Voraussetzungen
-Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Eine Beschreibung, wie dies funktioniert, sowie eine Übersicht über diesen Anwendungsfall findest Du hier (Link/Referenz noch ergänzen).
+Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Falls dies noch nicht geschehen ist, kannst Du die die Inhalte der Dateien `create_tables_all.sql` und `insert_all.sql` über ein Client-Programm (Copy-and-Paste in den Eingabebereich) als Skript ausführst.
 
 
 # Aufgabe 1: Überblick über die Tabellen `EMPLO` und `SHOP`
@@ -207,8 +207,7 @@ SELECT AVG( RETURN_DATE - RENTAL_DATE ) FROM RENTAL
 ```
 
 liefert die durchschnittliche Ausleihdauer in Tagen. Dabei werden noch nicht zurückgegebene Velos ignoriert. Erstelle eine modifizierte SQL-Anweisung, welche die noch nicht zurückgegebenen Velos berücksichtigt. Diese sollen in das Resultat einfliessen, indem man als Rückgabedatum das heutige Datum annimmt.  
-Tipp:  
-Verwende `CURRENT_DATE` zusammen mit der Funktion `COALESCE()`. Der Ausdruck `COALESCE(A, B)` liefert den Wert von `A`, sofern dieser nicht `NULL` ist, sonst `B`.
+Tipp:  Verwende `CURRENT_DATE` zusammen mit der Funktion `COALESCE()`. Der Ausdruck `COALESCE(A, B)` liefert den Wert von `A`, sofern dieser nicht `NULL` ist, sonst `B`.
 
 ::: {.content-hidden unless-meta="show_solutions"}
 **Lösung:**

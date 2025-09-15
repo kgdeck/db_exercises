@@ -3106,7 +3106,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">24. Juli 2025</p>
+      <p class="date">15. September 2025</p>
     </div>
   </div>
   
@@ -3124,7 +3124,7 @@ vertical-align: -.125em;
 </section>
 <section id="voraussetzungen" class="level1">
 <h1>Voraussetzungen</h1>
-<p>Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Eine Beschreibung, wie dies funktioniert, sowie eine Übersicht über diesen Anwendungsfall findest Du hier (Link/Referenz noch ergänzen).</p>
+<p>Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Falls dies noch nicht geschehen ist, kannst Du die die Inhalte der Dateien <code>create_tables_all.sql</code> und <code>insert_all.sql</code> über ein Client-Programm (Copy-and-Paste in den Eingabebereich) als Skript ausführst.</p>
 </section>
 <section id="aufgabe-1-überblick-über-die-tabellen-emplo-und-shop" class="level1">
 <h1>Aufgabe 1: Überblick über die Tabellen <code>EMPLO</code> und <code>SHOP</code></h1>
@@ -3185,8 +3185,7 @@ Um in SQL zur Laufzeit das aktuelle Datum zu ermitteln, kann man den Ausdruck <c
 <p>Die Anweisung</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>( RETURN_DATE <span class="op">-</span> RENTAL_DATE ) <span class="kw">FROM</span> RENTAL</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>liefert die durchschnittliche Ausleihdauer in Tagen. Dabei werden noch nicht zurückgegebene Velos ignoriert. Erstelle eine modifizierte SQL-Anweisung, welche die noch nicht zurückgegebenen Velos berücksichtigt. Diese sollen in das Resultat einfliessen, indem man als Rückgabedatum das heutige Datum annimmt.<br>
-Tipp:<br>
-Verwende <code>CURRENT_DATE</code> zusammen mit der Funktion <code>COALESCE()</code>. Der Ausdruck <code>COALESCE(A, B)</code> liefert den Wert von <code>A</code>, sofern dieser nicht <code>NULL</code> ist, sonst <code>B</code>.</p>
+Tipp: Verwende <code>CURRENT_DATE</code> zusammen mit der Funktion <code>COALESCE()</code>. Der Ausdruck <code>COALESCE(A, B)</code> liefert den Wert von <code>A</code>, sofern dieser nicht <code>NULL</code> ist, sonst <code>B</code>.</p>
 </section>
 </section>
 <section id="aufgabe-4-einfache-stringverarbeitung" class="level1">
