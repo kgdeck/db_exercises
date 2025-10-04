@@ -47,7 +47,7 @@ Die Resultatmenge hat folgende Gestalt:
 | 16055 | Leon    |                  |
 | 16051 | Bea     |                  |
 | 16050 | Felix   | Vaduz CyclePoint |
-| 16049 | Anna    | Bern Rollt       |
+| 16049 | Anna    | Vaduz CyclePoint |
 | ...   | ...     | ...              |
 
 

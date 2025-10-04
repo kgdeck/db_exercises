@@ -166,7 +166,7 @@ INSERT INTO BIKE VALUES (30030, 'GravelX', 'M', '29', 5, 0, 12, 14);
 --INSERT INTO BIKE VALUES (30038, 'GrindRoad', 'S', '27.5', 5, 0, 12, 15);
 --INSERT INTO BIKE VALUES (30039, 'UrbanRide', 'S', '26', 1, 0, 12, 15);
 INSERT INTO BIKE VALUES (30040, 'TrailKing', 'S', '29', 3, 1, 13, 16);
-INSERT INTO BIKE VALUES (30041, 'UrbanRide', 'S', '27.5', 1, 12.5, 1, 16);
+INSERT INTO BIKE VALUES (30041, 'UrbanRide', 'S', '27.5', 1, 1, 13, 16);
 INSERT INTO BIKE VALUES (30042, 'CargoGo', 'M', '27.5', 6, 0, 12.5, 16);
 INSERT INTO BIKE VALUES (30043, 'UrbanRide', 'S', '26', 1, 0, 10.5, 16);
 INSERT INTO BIKE VALUES (30044, 'SpeedMax', 'M', '27.5', 4, 1, 12, 16);
