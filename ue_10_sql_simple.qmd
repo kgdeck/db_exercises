@@ -166,7 +166,7 @@ Falls der Differenzausdruck nur einmal verwendet werden soll:
 SELECT ID, NAME, HIRE_DATE, DAYS FROM 
 ( SELECT ID, NAME, HIRE_DATE, DATE '2025-12-31' - HIRE_DATE AS DAYS 
    FROM EMPLO 
-) WHERE DATE DAYS < 900 
+) WHERE DAYS < 900 
 ```
 :::
 
