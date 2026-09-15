@@ -3084,7 +3084,7 @@ vertical-align: -.125em;
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="ue_10_sql_simple_sol.html"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<div class="quarto-alternate-formats"><h2>Andere Formate</h2><ul><li><a href="ue_10_sql_simple_solution.html"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -3106,7 +3106,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15. September 2025</p>
+      <p class="date">15. September 2026</p>
     </div>
   </div>
   
@@ -3218,7 +3218,7 @@ Mit dem Ausdruck <code>DATE &#39;2025-12-31&#39;</code> erhält man den Wert fü
 <div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, HIRE_DATE, DAYS <span class="kw">FROM</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>( <span class="kw">SELECT</span> <span class="kw">ID</span>, NAME, HIRE_DATE, <span class="dt">DATE</span> <span class="st">&#39;2025-12-31&#39;</span> <span class="op">-</span> HIRE_DATE <span class="kw">AS</span> DAYS </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> EMPLO </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>) <span class="kw">WHERE</span> <span class="dt">DATE</span> DAYS <span class="op">&lt;</span> <span class="dv">900</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>) <span class="kw">WHERE</span> DAYS <span class="op">&lt;</span> <span class="dv">900</span> </span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="b-aktuelles-datum" class="level2">
 <h2 class="anchored" data-anchor-id="b-aktuelles-datum">b) Aktuelles Datum</h2>
