@@ -3106,7 +3106,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15. September 2026</p>
+      <p class="date">17. September 2026</p>
     </div>
   </div>
   
@@ -3181,17 +3181,18 @@ eine Liste der Namen von Mitarbeitenden ohne Duplikate. Diese ist noch zu sortie
 </section>
 <section id="c-limitieren" class="level2">
 <h2 class="anchored" data-anchor-id="c-limitieren">c) Limitieren</h2>
-<p>Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.<br>
-Zusatzfrage: Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?</p>
+<p>Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.</p>
+<p>Zusatzfrage (ausserhalb der bisher behandelten Themen): Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?<br>
+Hinweis: Eine mögliche Lösung verwendet die Lösung von c) als sogenannte FROM-Subquery.</p>
 <p><strong>Lösung:</strong></p>
 <p>Diese Anweisung liefert das gewünschte Resultat</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> NAME, SALARY <span class="kw">FROM</span> EMPLO  </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> SALARY <span class="kw">DESC</span>, <span class="kw">ID</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> SALARY <span class="kw">DESC</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>FETCH <span class="fu">FIRST</span> <span class="dv">8</span> <span class="kw">ROWS</span> <span class="kw">ONLY</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Dieses könnte man noch wie folgt umsortieren (Zusatzfrage):</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> NAME, SALARY <span class="kw">FROM</span> ( </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">SELECT</span> NAME, SALARY <span class="kw">FROM</span> EMPLO </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ORDER</span> <span class="kw">BY</span> SALARY <span class="kw">DESC</span>, <span class="kw">ID</span>  </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ORDER</span> <span class="kw">BY</span> SALARY <span class="kw">DESC</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>   FETCH <span class="fu">FIRST</span> <span class="dv">8</span> <span class="kw">ROWS</span> <span class="kw">ONLY</span> </span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>) <span class="kw">ORDER</span> <span class="kw">BY</span> SALARY</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>

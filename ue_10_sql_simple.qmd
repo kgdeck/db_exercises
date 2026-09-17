@@ -110,7 +110,9 @@ ORDER BY LENGTH(NAME) DESC, NAME
 
 ## c) Limitieren
 Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.    
-Zusatzfrage: Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?  
+
+Zusatzfrage (ausserhalb der bisher behandelten Themen): Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?  
+Hinweis: Eine mögliche Lösung verwendet die Lösung von c) als sogenannte FROM-Subquery.
 
 ::: {.content-hidden unless-meta="show_solutions"}
 **Lösung:**
@@ -118,7 +120,7 @@ Zusatzfrage: Wie könnte man das Resultat nach Salär aufsteigend sortiert ausge
 Diese Anweisung liefert das gewünschte Resultat
 ```sql 
 SELECT NAME, SALARY FROM EMPLO  
-ORDER BY SALARY DESC, ID
+ORDER BY SALARY DESC
 FETCH FIRST 8 ROWS ONLY
 ```  
  
@@ -126,7 +128,7 @@ Dieses könnte man noch wie folgt umsortieren (Zusatzfrage):
 ```sql  
 SELECT NAME, SALARY FROM ( 
    SELECT NAME, SALARY FROM EMPLO 
-   ORDER BY SALARY DESC, ID  
+   ORDER BY SALARY DESC
    FETCH FIRST 8 ROWS ONLY 
 ) ORDER BY SALARY
 ```
