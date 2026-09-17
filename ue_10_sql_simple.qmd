@@ -1,6 +1,6 @@
 ---
 title: "Übungen Grundlagen SQL"
-author: "Klaus-Georg Deck"
+author: "Georg Deck"
 university: "FHNW HSI"
 course: "INSY"
 lang: de
