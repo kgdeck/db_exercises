@@ -89,6 +89,21 @@ ORDER BY ID DESC
 ```
 :::
 
+Welche SQL-Anweisungen liefern eine Liste aller Mitarbeitenden, wobei die Attribute `ID`, `NAME` und `SALARY` angezeigt werden? Die Ausgabereihenfolge soll einmal nach `SALARY` aufsteigend, einmal nach `SALARY` absteigend erfolgen. Was fällt bezüglich `NULL` bei `SALARY` auf?
+
+::: {.content-hidden unless-meta="show_solutions"}
+**Lösungen:**
+```sql
+SELECT ID, NAME, SALARY FROM SHOP
+ORDER BY SALARY
+
+SELECT ID, NAME, SALARY FROM SHOP
+ORDER BY SALARY DESC
+```
+:::
+Es fällt auf, dass die Datensätze mit `NULL` im Sortierkriterium (hier `SALARY`) im aufsteigenden Fall am Ende und im absteigenden Fall zu Beginn angezeigt werden. Dieses Verhalten gilt etwa bei Oracle- und PostgreSQL-Systemen; bei MySQL, MariaDB und MS-SQLServer erscheinen diese Werte immer am Ende.
+
+
 ## b) ORDER BY mit Funktionen 
 Welche SQL-Anweisung liefert eine Liste aller Namen von Mitarbeitenden? Es soll nach der Länge des Namens, die längsten zuerst, und bei gleicher Länge zeichencodebasiert sortiert werden. Demnach kommt `Pauline` vor `Lea` vor `Leo`.  
 Wir sind nur an den Namen und nicht an der Häufigkeit ihres Vorkommens interessiert, Mehrfachvorkommen bitte ignorieren.
@@ -109,7 +124,8 @@ ORDER BY LENGTH(NAME) DESC, NAME
 
 
 ## c) Limitieren
-Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.    
+Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.   
+Hinweis: Sortiere die Mitarbeitenden entsprechend und limitiere (LIMIT) das Resultat. Beachte jedoch das in a) beschriebene Verhalten hinsichtlich `NULL`.   
 
 Zusatzfrage (ausserhalb der bisher behandelten Themen): Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?  
 Hinweis: Eine mögliche Lösung verwendet die Lösung von c) als sogenannte FROM-Subquery.
@@ -119,15 +135,18 @@ Hinweis: Eine mögliche Lösung verwendet die Lösung von c) als sogenannte FROM
 
 Diese Anweisung liefert das gewünschte Resultat
 ```sql 
-SELECT NAME, SALARY FROM EMPLO  
+SELECT NAME, SALARY FROM EMPLO
+WHERE SALARY IS NOT NULL   
 ORDER BY SALARY DESC
 FETCH FIRST 8 ROWS ONLY
 ```  
+Anstelle der `WHERE`-Klausel könnte man auch `ORDER BY SALARY DESC NULLS LAST` verwenden. 
  
 Dieses könnte man noch wie folgt umsortieren (Zusatzfrage):
 ```sql  
 SELECT NAME, SALARY FROM ( 
    SELECT NAME, SALARY FROM EMPLO 
+   WHERE SALARY IS NOT NULL
    ORDER BY SALARY DESC
    FETCH FIRST 8 ROWS ONLY 
 ) ORDER BY SALARY
