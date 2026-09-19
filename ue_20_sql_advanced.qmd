@@ -10,8 +10,8 @@ format:
   html:
     toc: false
     number-sections: false
-    self-contained: true
-
+    embed-resources: true
+    format-links: false
   pdf:
     template: ue_template.tex
     toc: false

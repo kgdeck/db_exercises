@@ -10,7 +10,8 @@ format:
   html:
     toc: false
     number-sections: false
-    self-contained: true
+    embed-resources: true
+    format-links: false
   pdf:
     template: ue_template.tex
     toc: false
@@ -28,7 +29,7 @@ show_solutions: false
 In diesem Skript findest du typische SQL-Übungen mit Beispielcode und den erwarteten Ergebnistabellen. Ziel ist es, grundlegende SQL-Techniken wie Selektion, Bedingungen, Aggregation und Joins zu üben. 
 
 # Voraussetzungen
-Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Falls dies noch nicht geschehen ist, kannst Du die die Inhalte der Dateien `create_tables_all.sql` und `insert_all.sql` über ein Client-Programm (Copy-and-Paste in den Eingabebereich) als Skript ausführst.
+Du verfügst über einen Zugang zu einem Datenbank-Server (Oracle oder Postgres), auf dem die Realisierung des Bike-Verleih-Szenarios erfolgreich installiert wurde. Falls dies noch nicht geschehen ist, kannst Du die die Inhalte der Dateien `create_tables_all.sql` und `insert_all.sql` über ein Client-Programm (Copy-and-Paste in den Eingabebereich) als Skript ausführen.
 
 
 # Aufgabe 1: Überblick über die Tabellen `EMPLO` und `SHOP`
@@ -100,9 +101,9 @@ ORDER BY SALARY
 SELECT ID, NAME, SALARY FROM SHOP
 ORDER BY SALARY DESC
 ```
-:::
-Es fällt auf, dass die Datensätze mit `NULL` im Sortierkriterium (hier `SALARY`) im aufsteigenden Fall am Ende und im absteigenden Fall zu Beginn angezeigt werden. Dieses Verhalten gilt etwa bei Oracle- und PostgreSQL-Systemen; bei MySQL, MariaDB und MS-SQLServer erscheinen diese Werte immer am Ende.
 
+Es fällt auf, dass die Datensätze mit `NULL` im Sortierkriterium (hier `SALARY`) im aufsteigenden Fall am Ende und im absteigenden Fall zu Beginn angezeigt werden. Dieses Verhalten gilt etwa bei Oracle- und PostgreSQL-Systemen; bei MySQL, MariaDB und MS-SQLServer erscheinen diese Werte immer am Ende.
+:::
 
 ## b) ORDER BY mit Funktionen 
 Welche SQL-Anweisung liefert eine Liste aller Namen von Mitarbeitenden? Es soll nach der Länge des Namens, die längsten zuerst, und bei gleicher Länge zeichencodebasiert sortiert werden. Demnach kommt `Pauline` vor `Lea` vor `Leo`.  
@@ -127,9 +128,6 @@ ORDER BY LENGTH(NAME) DESC, NAME
 Ermittle die Namen und das Salär der 8 bestbezahlten Mitarbeitenden. Gehe dabei davon aus, dass es nicht mehrere Mitarbeitende gibt, die sich die 8. Position teilen.   
 Hinweis: Sortiere die Mitarbeitenden entsprechend und limitiere (LIMIT) das Resultat. Beachte jedoch das in a) beschriebene Verhalten hinsichtlich `NULL`.   
 
-Zusatzfrage (ausserhalb der bisher behandelten Themen): Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?  
-Hinweis: Eine mögliche Lösung verwendet die Lösung von c) als sogenannte FROM-Subquery.
-
 ::: {.content-hidden unless-meta="show_solutions"}
 **Lösung:**
 
@@ -141,8 +139,15 @@ ORDER BY SALARY DESC
 FETCH FIRST 8 ROWS ONLY
 ```  
 Anstelle der `WHERE`-Klausel könnte man auch `ORDER BY SALARY DESC NULLS LAST` verwenden. 
+:::
+
+Zusatzfrage (ausserhalb der bisher behandelten Themen): Wie könnte man das Resultat nach Salär aufsteigend sortiert ausgeben?  
+Hinweis: Eine mögliche Lösung verwendet die vorherige Lösung als sogenannte FROM-Subquery.
+
+::: {.content-hidden unless-meta="show_solutions"}
+**Lösung:**
  
-Dieses könnte man noch wie folgt umsortieren (Zusatzfrage):
+Das Ergebnis der ursprünglichen Lösung könnte man noch wie folgt umsortieren:
 ```sql  
 SELECT NAME, SALARY FROM ( 
    SELECT NAME, SALARY FROM EMPLO 
